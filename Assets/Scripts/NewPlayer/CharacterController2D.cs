@@ -49,7 +49,10 @@ public class CharacterController2D : MonoBehaviour
 			{
 				m_Grounded = true;
 				if (!wasGrounded)
+				{
+					gameObject.GetComponent<PlayerMovement>().OnLanding();
 					OnLandEvent.Invoke();
+				}
 			}
 		}
 	}
