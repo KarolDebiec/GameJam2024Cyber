@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Enemy : MonoBehaviour
 {
-    
+    [SerializeField] LayerMask groundLayerMask;
     [SerializeField] GameObject player;
     public float attackTime;
-    public Vector3 targetPos;
-    public Vector3 translateSphereOnHight = new Vector3(0,1,0);
+    public Vector3 targetPos = new Vector3(0,0,0);
+    public Vector3 translateSphereOnHight = new Vector3(0,2,0);
     public Vector3 translateSphereOnGround = new Vector3(-1, -1, 0);
     //float ySphereTranslate = 1;
     float xSphereTranslate = 1;
-    public float speed;
+    public float speed = 0.5f;
     public float attackRange;
     public float attackSpeed;
     public float attackTimer;
@@ -29,10 +30,14 @@ public class Enemy : MonoBehaviour
     public bool isNotEnoughtHeight = false;
 
     public bool isAttacked;
-    [SerializeField] public LayerMask groundLayer;
+    
 
+    private void Start()
+    {
+        
+    }
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
         this.movement();
         if (isAttacked)
@@ -43,12 +48,19 @@ public class Enemy : MonoBehaviour
             {
                 attackTime = attackSpeed;
                 isAttacked = false;
-               // if (intersect)  //collider do ataku
+                // if (intersect)  //collider do ataku
                 {
-                   // this.attack();
+                    // this.attack();
                 }
             }
         }
+    }
+
+    void Update()
+    {
+       
+
+      
 
         
         
@@ -76,25 +88,24 @@ public class Enemy : MonoBehaviour
 
     private void movement()
     {
-
-
+        
+        
         /// sprawdzenie y
-  
+
         /// jesli rowny
-        if (Mathf.Abs(this.transform.position.y -player.transform.position.y) < 0.1f)
+        if (Mathf.Abs(this.transform.position.y -player.transform.position.y) < 0.2f)
         {
             ///Ustawiæ dobr¹ pozycje dla OverlapSphere
-           
-            Collider[] hitColliders = Physics.OverlapSphere(this.transform.position +this.translateSphereOnGround, 0.1f, 6);
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnGround.x, this.transform.position.y + this.translateSphereOnGround.y), 0.3f, groundLayerMask);
             if (hitColliders.Length > 0)
             {
-                Debug.Log("kruwa");
+
                 isTooHigh = false;
                 isNotEnoughtHeight = false;
                 this.targetPos = this.player.transform.position - this.transform.position;
                 this.targetPos.y = 0;
                 this.targetPos.Normalize();
-               
+                this.transform.position += this.targetPos * Time.deltaTime;
             }
             else /// logika do niespadania kiedy przerwa miêdzy platformiami
             {
@@ -109,15 +120,22 @@ public class Enemy : MonoBehaviour
         {
             if (!this.isTooHigh)
             {
-                isTooHigh = true;
                 this.targetPos = this.player.transform.position - this.transform.position;
+                isTooHigh = true;
                 this.targetPos.y = 0;
                 this.targetPos.Normalize();
             }
             else
             {
                 //opis ruchu
-                this.transform.position += this.targetPos * Time.deltaTime;
+                Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y + (-1)), 0.3f, groundLayerMask);
+                if(hitColliders.Length > 0)
+                {
+                    this.targetPos.y = 0;
+                    this.targetPos.Normalize();
+                    this.transform.position += this.targetPos * Time.deltaTime;
+                }
+                
 
             }
         }
@@ -126,16 +144,17 @@ public class Enemy : MonoBehaviour
             if (!this.isNotEnoughtHeight)
             {
                 isNotEnoughtHeight = true;
-                this.targetPos = this.player.transform.position - this.transform.position;
+
                 this.targetPos.y = 0;
                 this.targetPos.Normalize();
             }
             else
             {
-                Collider[] hitColliders = Physics.OverlapSphere(this.transform.position + this.translateSphereOnHight, 0.1f, 6);
+                Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnHight.x, this.transform.position.y + this.translateSphereOnHight.y), 0.3f, groundLayerMask);
                 if (hitColliders.Length > 0)
                 {
-                    this.transform.position += this.targetPos * Time.deltaTime;
+                    this.transform.position += this.targetPos * Time.deltaTime * speed;
+                    
                 }
                 else ///logika do skoku na platforme
                 {
@@ -150,7 +169,7 @@ public class Enemy : MonoBehaviour
         //
         //jesli tak odejsc do punktu skoku
         calculatexSphereTranslate();
-        this.transform.position += this.targetPos * Time.deltaTime;
+
     }
 
     void OnDrawGizmos()
@@ -160,12 +179,15 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawSphere(this.transform.position + translateSphereOnGround, 0.6f);
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(this.transform.position + translateSphereOnHight, 0.6f);
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawSphere(this.transform.position + new Vector3(0,-1,0), 0.6f);
     }
 
     void calculatexSphereTranslate()
     {
-        if(targetPos.x>0) { translateSphereOnGround = new Vector3(xSphereTranslate,-1.01f,0.4f); }
-        else  { translateSphereOnGround = new Vector3(-xSphereTranslate,-1.01f,0.4f); }
+        if(targetPos.x>0) { translateSphereOnGround = new Vector3(xSphereTranslate,-1f,0f); }
+        else  { translateSphereOnGround = new Vector3(-xSphereTranslate,-1f,0f); }
     }
 
 }
