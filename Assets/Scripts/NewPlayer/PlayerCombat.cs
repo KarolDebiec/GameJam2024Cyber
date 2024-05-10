@@ -27,6 +27,7 @@ public class PlayerCombat : MonoBehaviour
         {
             //Logika zabierania zycia
             Debug.Log("hit");
+            enemy.GetComponent<Enemy>().takeDamage();
         }
     }
 
