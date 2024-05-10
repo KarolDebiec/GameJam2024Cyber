@@ -7,12 +7,14 @@ using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
 {
-    /*
-    [SerializeField] public Player player;
-    [SerializeField] BoxCollider2D colliderForJumping;
-    [SerializeField] BoxCollider2D colliderForFalling;
+    
+    [SerializeField] GameObject player;
     public float attackTime;
     public Vector3 targetPos;
+    public Vector3 translateSphereOnHight = new Vector3(0,1,0);
+    public Vector3 translateSphereOnGround = new Vector3(-1, -1, 0);
+    //float ySphereTranslate = 1;
+    float xSphereTranslate = 1;
     public float speed;
     public float attackRange;
     public float attackSpeed;
@@ -23,8 +25,8 @@ public class Enemy : MonoBehaviour
     public float jumpHeight;
     public bool shouldJump;
 
-    public bool isTooHigh;
-    public bool isNotEnoughtHeight;
+    public bool isTooHigh = false;
+    public bool isNotEnoughtHeight = false;
 
     public bool isAttacked;
     [SerializeField] public LayerMask groundLayer;
@@ -32,23 +34,23 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        this.movement();
         if (isAttacked)
         {
             attackTime -= Time.deltaTime;
 
             if (attackTime <= 0.0f)
             {
-                timerEnded();
                 attackTime = attackSpeed;
                 isAttacked = false;
-                if (intersect)  //collider do ataku
+               // if (intersect)  //collider do ataku
                 {
-                    this.attack();
+                   // this.attack();
                 }
             }
         }
 
-        this.movement();
+        
         
     }
 
@@ -64,7 +66,7 @@ public class Enemy : MonoBehaviour
 
     public void attack()
     {
-        this.player.takeDamage(damage);
+       // this.player.takeDamage(damage);
     }
 
     public void takeDamage()
@@ -77,17 +79,22 @@ public class Enemy : MonoBehaviour
 
 
         /// sprawdzenie y
-
+  
         /// jesli rowny
-        if (this.transform.position.y == player.transform.position.y)
+        if (Mathf.Abs(this.transform.position.y -player.transform.position.y) < 0.1f)
         {
             ///Ustawiæ dobr¹ pozycje dla OverlapSphere
-            Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, 0.5f, 6);
+           
+            Collider[] hitColliders = Physics.OverlapSphere(this.transform.position +this.translateSphereOnGround, 0.1f, 6);
             if (hitColliders.Length > 0)
             {
+                Debug.Log("kruwa");
                 isTooHigh = false;
                 isNotEnoughtHeight = false;
                 this.targetPos = this.player.transform.position - this.transform.position;
+                this.targetPos.y = 0;
+                this.targetPos.Normalize();
+               
             }
             else /// logika do niespadania kiedy przerwa miêdzy platformiami
             {
@@ -125,7 +132,7 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                Collider[] hitColliders = Physics.OverlapSphere(this.transform.position + new Vector3(0.0f,1.0f,0.0f), 0.5f, 6);
+                Collider[] hitColliders = Physics.OverlapSphere(this.transform.position + this.translateSphereOnHight, 0.1f, 6);
                 if (hitColliders.Length > 0)
                 {
                     this.transform.position += this.targetPos * Time.deltaTime;
@@ -136,14 +143,29 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
-            // idzie x do gracza
-            /// jesli mniejszy
-            // sprawdzic czy platforma jest nad g³ow¹
-            //jesli nie dojsc do bezpiecznego
-            //
-            //jesli tak odejsc do punktu skoku
-        }
+        // idzie x do gracza
+        /// jesli mniejszy
+        // sprawdzic czy platforma jest nad g³ow¹
+        //jesli nie dojsc do bezpiecznego
+        //
+        //jesli tak odejsc do punktu skoku
+        calculatexSphereTranslate();
+        this.transform.position += this.targetPos * Time.deltaTime;
+    }
 
-    */
+    void OnDrawGizmos()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(this.transform.position + translateSphereOnGround, 0.6f);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(this.transform.position + translateSphereOnHight, 0.6f);
+    }
+
+    void calculatexSphereTranslate()
+    {
+        if(targetPos.x>0) { translateSphereOnGround = new Vector3(xSphereTranslate,-1.01f,0.4f); }
+        else  { translateSphereOnGround = new Vector3(-xSphereTranslate,-1.01f,0.4f); }
+    }
 
 }
