@@ -12,9 +12,9 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-
+            Attack();
         }
         
     }
@@ -28,5 +28,11 @@ public class PlayerCombat : MonoBehaviour
             //Logika zabierania zycia
             Debug.Log("hit");
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }

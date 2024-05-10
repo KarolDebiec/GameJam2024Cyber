@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1342224195557252326}
   - component: {fileID: 6727687022534327684}
   - component: {fileID: 6477180055271523130}
+  - component: {fileID: 8213557465408246572}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -96,11 +97,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f59ba3dac0caeac418d4cf3ec29c9222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   player: {fileID: 0}
-  colliderForJumping: {fileID: 0}
-  colliderForFalling: {fileID: 0}
   attackTime: 0
   targetPos: {x: 0, y: 0, z: 0}
+  translateSphereOnHight: {x: 0, y: 2, z: 0}
+  translateSphereOnGround: {x: -1, y: -1, z: 0}
   speed: 0
   attackRange: 0
   attackSpeed: 0
@@ -113,6 +117,38 @@ MonoBehaviour:
   isTooHigh: 0
   isNotEnoughtHeight: 0
   isAttacked: 0
-  groundLayer:
+--- !u!70 &8213557465408246572
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4212966253919837680}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
