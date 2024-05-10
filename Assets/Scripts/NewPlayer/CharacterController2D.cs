@@ -10,6 +10,7 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Transform m_GroundCheck;
     [SerializeField] private Transform m_CeilingCheck;
 
+    private GameController gameController;
     const float k_GroundedRadius = .2f;
     public bool m_Grounded;
     const float k_CeilingRadius = .2f;
@@ -41,6 +42,10 @@ public class CharacterController2D : MonoBehaviour
         if (OnLandEvent == null)
             OnLandEvent = new UnityEvent();
     }
+    private void Start()
+    {
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+    }
     private void Update()
     {
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
@@ -51,7 +56,7 @@ public class CharacterController2D : MonoBehaviour
                 jumpAnticipationTime = 0;
                 isAnticipating = true;
             }
-            Move(horizontalMove * Time.fixedDeltaTime, false, true);
+            Move(gameController.playerSpeedMultiplicator * horizontalMove * Time.fixedDeltaTime, false, true);
         }
         if(isAnticipating)
         {
@@ -64,7 +69,7 @@ public class CharacterController2D : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Move(horizontalMove * Time.fixedDeltaTime, false, false);
+        Move(gameController.playerSpeedMultiplicator * horizontalMove * Time.fixedDeltaTime, false, false);
         bool wasGrounded = m_Grounded;
         m_Grounded = false;
 
