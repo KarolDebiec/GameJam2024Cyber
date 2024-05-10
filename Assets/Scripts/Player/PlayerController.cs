@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private float horizontal;
-    private float speed = 8f;
+    public float multiplier = 1f;
+    public float speed = 8f;
     private float jumpingPower = 16f;
     private bool isFacingRight = true;
 
@@ -19,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower* multiplier);
         }
 
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
@@ -32,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        rb.velocity = new Vector2(horizontal * speed * multiplier, rb.velocity.y);
     }
 
     private bool IsGrounded()
