@@ -27,7 +27,7 @@ public class PassThroughPlatform : MonoBehaviour
     }
     private void SetPlayerOnPlatform(Collision2D other ,bool value)
     {
-        var player = other.gameObject.GetComponent<PlayerController>();
+        var player = other.gameObject.GetComponent<CharacterController2D>();
         if(player != null)
         {
             _playerOnPlatform = value;
