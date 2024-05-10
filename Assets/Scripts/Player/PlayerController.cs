@@ -51,4 +51,10 @@ public class PlayerController : MonoBehaviour
             transform.localScale = localScale;
         }
     }
+
+    public void ChangeMovementMultiplier(float value)
+    {
+        multiplier = value;
+        rb.gravityScale = value;
+    }
 }
