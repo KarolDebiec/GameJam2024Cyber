@@ -289,6 +289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySpeedMultiplicator: 1
   playerSpeedMultiplicator: 1
+  minPlayerSpeedMultiplicator: 1
   speedGainFactor: 0.01
 --- !u!4 &326378198
 Transform:
@@ -1423,6 +1424,14 @@ PrefabInstance:
     - target: {fileID: 3757415540174106251, guid: 0aefe885a1814054b9d72bdc27094f49, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563087104418742937, guid: 0aefe885a1814054b9d72bdc27094f49, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563087104418742937, guid: 0aefe885a1814054b9d72bdc27094f49, type: 3}
+      propertyPath: jumpWaitFactor
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7294902050145813918, guid: 0aefe885a1814054b9d72bdc27094f49, type: 3}
       propertyPath: m_LocalPosition.x

@@ -25,6 +25,10 @@ public class CharacterController2D : MonoBehaviour
     private float jumpAnticipationTime = 0f;
     private bool isAnticipating = false;
 
+    public float jumpWaitFactor = 0.5f;
+    private float jumpWaitTime = 0f;
+    private bool canJump = true;
+
     public float runSpeed = 40f;
     [SerializeField] private float m_MaxSpeed = 10f; // Maksymalna prêdkoœæ biegu
     [SerializeField] private float m_Acceleration = 20f; // Przyspieszenie postaci
@@ -49,8 +53,9 @@ public class CharacterController2D : MonoBehaviour
     private void Update()
     {
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-        if (Input.GetButtonDown("Jump"))
+        if (canJump && (Input.GetButtonDown("Jump") || Input.GetAxisRaw("Vertical") > 0.9f))
         {
+            canJump = false;
             if(!m_Grounded)
             {
                 jumpAnticipationTime = 0;
@@ -58,6 +63,16 @@ public class CharacterController2D : MonoBehaviour
             }
             Move(gameController.playerSpeedMultiplicator * horizontalMove * Time.fixedDeltaTime, false, true);
         }
+        if(!canJump)
+        {
+            jumpWaitTime += Time.deltaTime;
+            if(jumpWaitTime >= jumpWaitFactor)
+            {
+                canJump = true;
+                jumpWaitTime = 0;
+            }
+        }
+
         if(isAnticipating)
         {
             jumpAnticipationTime += Time.deltaTime;
