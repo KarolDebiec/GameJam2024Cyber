@@ -16,8 +16,7 @@ GameObject:
   - component: {fileID: 5563087104418742937}
   - component: {fileID: 3679927919170613965}
   - component: {fileID: 2767630724276024760}
-  - component: {fileID: 1271692715042369326}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -107,8 +106,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -129,7 +128,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 3757415540174106251}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 73b72ae1b5d06ca4b95d3f4f5311f60f, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -188,14 +187,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b5c35e096091a4c866617eae6ae866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_JumpForce: 400
-  m_MovementSmoothing: 0.05
-  m_AirControl: 0
+  m_JumpForce: 1300
+  m_MovementSmoothing: 0.109
+  m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
     m_Bits: 64
   m_GroundCheck: {fileID: 2098541071504829906}
   m_CeilingCheck: {fileID: 7776827397765855967}
+  m_Grounded: 0
+  runSpeed: 100
+  jumpAnticipationFactor: 0.2
+  jumpAnticipationTime: 0
+  isAnticipating: 0
+  m_MaxSpeed: 16
+  m_Acceleration: 15
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -223,23 +229,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4e04fb826e97b49ba33aa799064118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1271692715042369326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3757415540174106251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f611a8de4581778429b05279f17b417c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 5563087104418742937}
-  animator: {fileID: 9050586225641550289}
-  playerCombat: {fileID: 3679927919170613965}
-  runSpeed: 40
-  isJumping: 0
 --- !u!1 &3832367317165058911
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,7 +238,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2098541071504829906}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,7 +269,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7776827397765855967}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CellingCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
