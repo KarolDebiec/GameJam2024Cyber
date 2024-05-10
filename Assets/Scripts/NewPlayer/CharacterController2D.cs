@@ -17,6 +17,10 @@ public class CharacterController2D : MonoBehaviour
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
 
+	public float jumpAnticipationFactor = 0.05f;
+	public float anticipationTime = 0f;
+	public bool isAnticipating = false;
+
 	[Header("Events")]
 	[Space]
 
@@ -34,8 +38,23 @@ public class CharacterController2D : MonoBehaviour
 			OnLandEvent = new UnityEvent();
 
 	}
-
-	private void FixedUpdate()
+    private void Update()
+    {
+        if(isAnticipating)
+        {
+			anticipationTime += Time.deltaTime;
+			if(anticipationTime >= jumpAnticipationFactor)
+            {
+				ResetAnticipation();
+			}
+        }
+    }
+	public void ResetAnticipation()
+    {
+		anticipationTime = 0;
+		isAnticipating = false;
+	}
+    private void FixedUpdate()
 	{
 		bool wasGrounded = m_Grounded;
 		m_Grounded = false;
@@ -52,6 +71,13 @@ public class CharacterController2D : MonoBehaviour
 				{
 					gameObject.GetComponent<PlayerMovement>().OnLanding();
 					OnLandEvent.Invoke();
+					if (isAnticipating)
+					{
+						Debug.Log("god help me");
+						m_Grounded = false;
+						m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+						ResetAnticipation();
+					}
 				}
 			}
 		}
@@ -92,11 +118,17 @@ public class CharacterController2D : MonoBehaviour
 				Flip();
 			}
 		}
+		if(!m_Grounded && jump)
+        {
+			ResetAnticipation();
+			isAnticipating = true;
+        }
 		// If the player should jump...
 		if (m_Grounded && jump)
 		{
 			// Add a vertical force to the player.
 			m_Grounded = false;
+			Debug.Log("they do be jumpy");
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 		}
 	}
