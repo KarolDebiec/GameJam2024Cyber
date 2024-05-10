@@ -17,14 +17,14 @@ public class CharacterController2D : MonoBehaviour
     private bool m_FacingRight = true;
     private Vector3 m_Velocity = Vector3.zero;
 
-    public float runSpeed = 40f;
+    
     private float horizontalMove = 0f;
 
     public float jumpAnticipationFactor = 0.05f;
-    public float jumpAnticipationTime = 0f;
-    public bool isAnticipating = false;
+    private float jumpAnticipationTime = 0f;
+    private bool isAnticipating = false;
 
-
+    public float runSpeed = 40f;
     [SerializeField] private float m_MaxSpeed = 10f; // Maksymalna prêdkoœæ biegu
     [SerializeField] private float m_Acceleration = 20f; // Przyspieszenie postaci
 
