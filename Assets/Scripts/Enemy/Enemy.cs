@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
     public bool playerIsInAttackRange;
     public float jumpHeight;
     public bool shouldJump;
-
+    private Rigidbody2D rb;
     public bool isTooHigh = false;
     public bool isNotEnoughtHeight = false;
 
@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
     // Update is called once per frame
     private void FixedUpdate()
@@ -59,10 +59,6 @@ public class Enemy : MonoBehaviour
     void Update()
     {
        
-
-      
-
-        
         
     }
 
@@ -109,7 +105,8 @@ public class Enemy : MonoBehaviour
             }
             else /// logika do niespadania kiedy przerwa miêdzy platformiami
             {
-
+                //logika skoku
+                rb.AddForce(new Vector2(0,400));
             }
 
         }
@@ -131,9 +128,15 @@ public class Enemy : MonoBehaviour
                 Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y + (-1)), 0.3f, groundLayerMask);
                 if(hitColliders.Length > 0)
                 {
+                    //skok
                     this.targetPos.y = 0;
                     this.targetPos.Normalize();
                     this.transform.position += this.targetPos * Time.deltaTime;
+                }
+                else
+                {
+
+                    
                 }
                 
 
@@ -153,12 +156,12 @@ public class Enemy : MonoBehaviour
                 Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnHight.x, this.transform.position.y + this.translateSphereOnHight.y), 0.3f, groundLayerMask);
                 if (hitColliders.Length > 0)
                 {
-                    this.transform.position += this.targetPos * Time.deltaTime * speed;
+                   //skok
                     
                 }
                 else ///logika do skoku na platforme
                 {
-
+                    this.transform.position += this.targetPos * Time.deltaTime * speed;
                 }
             }
         }
