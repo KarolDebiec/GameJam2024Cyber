@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     private GameController gameController;
     [SerializeField] LayerMask groundLayerMask;
     [SerializeField] LayerMask palyerLayerMask;
-    [SerializeField] GameObject player;
+   Transform player;
     [SerializeField] Animator animator;
     public float attackTime;
     public Vector3 targetPos = new Vector3(0, 0, 0);
@@ -47,11 +47,13 @@ public class Enemy : MonoBehaviour
     {
         speed = 6.0f;
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        
         translateSphereOnHight = new Vector3(0, 3, 0);
         translateSphereOnGround = new Vector3(-1, -0.70f, 0);
         multipleGravity = 5.0f;
         attackSpeed = 0.2f;
-}
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+    }
     // Update is called once per frame
     private void FixedUpdate()
     {
@@ -88,7 +90,7 @@ public class Enemy : MonoBehaviour
 
     private void movement()
     {
-        this.targetPos = this.player.transform.position - this.transform.position;
+        this.targetPos = this.player.position - this.transform.position;
         this.targetPos.y = 0;
         this.targetPos.z = 0;
         this.targetPos.Normalize();
@@ -105,7 +107,7 @@ public class Enemy : MonoBehaviour
 
             }
 
-            if (Mathf.Abs(this.transform.position.y - player.transform.position.y) < 0.3f)
+            if (Mathf.Abs(this.transform.position.y - player.position.y) < 0.3f)
             {
                 ///Ustawiæ dobr¹ pozycje dla OverlapSphere
                 Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnGround.x, this.transform.position.y + this.translateSphereOnGround.y), 0.3f, groundLayerMask);
@@ -114,7 +116,7 @@ public class Enemy : MonoBehaviour
 
                     isTooHigh = false;
                     isNotEnoughtHeight = false;
-                    this.targetPos = this.player.transform.position - this.transform.position;
+                    this.targetPos = this.player.position - this.transform.position;
                     this.targetPos.y = 0;
                     this.targetPos.z = 0;
                     this.targetPos.Normalize();
@@ -133,7 +135,7 @@ public class Enemy : MonoBehaviour
             //biegnie dopoki nie zaatakuje lub nie zginie
 
             /// jesli wiekszy
-            else if (this.transform.position.y > player.transform.position.y)
+            else if (this.transform.position.y > player.position.y)
             {
                 
 

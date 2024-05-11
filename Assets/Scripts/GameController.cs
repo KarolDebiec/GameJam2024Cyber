@@ -78,8 +78,12 @@ public class GameController : MonoBehaviour
     public void calculateSpeeddown()
     {
         score += 100;
-        float randomNumber = Random.Range(0.05f, 0.10f);
-        playerSpeedMultiplier = playerSpeedMultiplier - playerSpeedMultiplier * randomNumber;
+        float randomNumber = Random.Range(0.3f, 0.8f);
+        if (playerSpeedMultiplier - playerSpeedMultiplier * randomNumber > minPlayerSpeedMultiplier)
+            playerSpeedMultiplier = playerSpeedMultiplier - playerSpeedMultiplier * randomNumber;
+        else playerSpeedMultiplier = minPlayerSpeedMultiplier;
+
+
     }
 
     public void PlayerDeath()
