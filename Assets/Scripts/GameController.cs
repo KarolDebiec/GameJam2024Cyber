@@ -88,7 +88,6 @@ public class GameController : MonoBehaviour
 
     public void PlayerDeath()
     {
-        Debug.Log("player is dead");
         cinemachineConfiner.enabled = false;
         isPlayerDead = true;
         finalScoreText.text = score.ToString("F0");
