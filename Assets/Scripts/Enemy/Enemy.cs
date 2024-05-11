@@ -71,6 +71,7 @@ public class Enemy : MonoBehaviour
                 {
                     animator.SetTrigger("enemyAttack");
                     gameController.calculateSpeedup();
+                    GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayEnemyAttackSoundClip();
                 }
                 attackTime = attackSpeed;
                 isAttacked = false;
@@ -86,7 +87,7 @@ public class Enemy : MonoBehaviour
     public void takeDamage()
     {
         gameController.calculateSpeeddown();
-
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayEnemyDeathSoundClip();
         Destroy(this.gameObject);
     }
 

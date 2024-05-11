@@ -64,6 +64,7 @@ public class GameController : MonoBehaviour
         if (playerSpeedMultiplier + playerSpeedMultiplier * randomNumber < maxPlayerSpeedMultiplier)
         {
             StartCoroutine(camShake());
+            GetComponent<AudioController>().PlayPlayerDamageSoundClip();
             playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier * randomNumber;
             minPlayerSpeedMultiplier +=  (playerSpeedMultiplier * randomNumber)/4f; 
             if(score >= 10)
@@ -89,13 +90,17 @@ public class GameController : MonoBehaviour
 
     public void PlayerDeath()
     {
-        cinemachineConfiner.enabled = false;
-        isPlayerDead = true;
-        finalScoreText.text = score.ToString("F0");
-        scoreText.gameObject.SetActive(false);
-        speedSlider.gameObject.SetActive(false);
-        finalScoreText.gameObject.SetActive(true);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController2D>().isPlayerDead = true;
+        if(!isPlayerDead)
+        {
+            cinemachineConfiner.enabled = false;
+            isPlayerDead = true;
+            finalScoreText.text = score.ToString("F0");
+            scoreText.gameObject.SetActive(false);
+            speedSlider.gameObject.SetActive(false);
+            finalScoreText.gameObject.SetActive(true);
+            GetComponent<AudioController>().PlayPlayerDeathSoundClip();
+            GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController2D>().isPlayerDead = true;
+        }
     }
 
     private IEnumerator camShake()

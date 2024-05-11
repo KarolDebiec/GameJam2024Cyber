@@ -11,6 +11,7 @@ public class AudioController : MonoBehaviour
     public AudioSource playerDeathSource;
     public List<AudioClip> playerDeathSoundClips;
     public AudioSource playerDamageSource;
+    public AudioSource backgroundMusicSource;
     public List<AudioClip> playerDamageSoundClips;
     public AudioSource playerAttackSource;
     public List<AudioClip> playerAttackSoundClips;
@@ -42,6 +43,7 @@ public class AudioController : MonoBehaviour
     }
     public void PlayPlayerDeathSoundClip()
     {
+        backgroundMusicSource.Stop();
         if (playerDeathSoundClips.Count > 0)
         {
             int index = Random.Range(0, playerDeathSoundClips.Count);
