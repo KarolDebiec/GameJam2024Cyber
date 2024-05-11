@@ -29,6 +29,9 @@ public class CharacterController2D : MonoBehaviour
     private float jumpWaitTime = 0f;
     private bool canJump = true;
 
+    private float jumpForce;
+    private float defaulGravityForce;
+
     public float runSpeed = 40f;
     [SerializeField] private float m_MaxSpeed = 10f; // Maksymalna prêdkoœæ biegu
     [SerializeField] private float m_Acceleration = 20f; // Przyspieszenie postaci
@@ -49,6 +52,8 @@ public class CharacterController2D : MonoBehaviour
     private void Start()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        defaulGravityForce = GetComponent<Rigidbody2D>().gravityScale;
+        jumpForce = m_JumpForce;
     }
     private void Update()
     {
@@ -66,7 +71,7 @@ public class CharacterController2D : MonoBehaviour
         if(!canJump)
         {
             jumpWaitTime += Time.deltaTime;
-            if(jumpWaitTime >= jumpWaitFactor)
+            if(jumpWaitTime >= jumpWaitFactor/ gameController.playerSpeedMultiplicator)
             {
                 canJump = true;
                 jumpWaitTime = 0;
@@ -101,6 +106,8 @@ public class CharacterController2D : MonoBehaviour
                     {
                         Debug.Log("on grounded : " + m_JumpForce);
                         m_Grounded = false;
+                        m_JumpForce = jumpForce * gameController.playerSpeedMultiplicator;
+                        m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplicator * gameController.playerSpeedMultiplicator;
                         m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
                         m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
                         ResetAnticipation();
@@ -186,6 +193,8 @@ public class CharacterController2D : MonoBehaviour
 
         if (m_Grounded && jump)
         {
+            m_JumpForce = jumpForce * gameController.playerSpeedMultiplicator;
+            m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplicator * gameController.playerSpeedMultiplicator;
             m_Grounded = false;
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
         }
