@@ -99,12 +99,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
+  palyerLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
   player: {fileID: 0}
   attackTime: 0
   targetPos: {x: 0, y: 0, z: 0}
   translateSphereOnHight: {x: 0, y: 2, z: 0}
   translateSphereOnGround: {x: -1, y: -1, z: 0}
+  translateAttackCircle: {x: 0, y: 0}
   speed: 0
   attackRange: 0
   attackSpeed: 0
@@ -117,6 +121,9 @@ MonoBehaviour:
   isTooHigh: 0
   isNotEnoughtHeight: 0
   isAttacked: 0
+  isJumping: 0
+  yVelocity: 0
+  yAcceleration: -9.81
 --- !u!70 &8213557465408246572
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

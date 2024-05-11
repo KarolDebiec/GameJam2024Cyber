@@ -8,12 +8,16 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Enemy : MonoBehaviour
 {
+
+    private GameController gameController;
     [SerializeField] LayerMask groundLayerMask;
+    [SerializeField] LayerMask palyerLayerMask;
     [SerializeField] GameObject player;
     public float attackTime;
     public Vector3 targetPos = new Vector3(0,0,0);
     public Vector3 translateSphereOnHight = new Vector3(0,2,0);
     public Vector3 translateSphereOnGround = new Vector3(-1, -1, 0);
+    public Vector2 translateAttackCircle = new Vector2(0,0);
     //float ySphereTranslate = 1;
     float xSphereTranslate = 1;
     public float speed;
@@ -37,6 +41,7 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         speed = 6.0f;
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
     // Update is called once per frame
     private void FixedUpdate()
@@ -48,6 +53,11 @@ public class Enemy : MonoBehaviour
 
             if (attackTime <= 0.0f)
             {
+                Collider2D hitCollider = Physics2D.OverlapCircle(new Vector2(this.transform.position.x + this.translateAttackCircle.x, this.transform.position.y + this.translateAttackCircle.y), 0.3f, palyerLayerMask);
+                if (hitCollider != null)
+                {
+                    gameController.calculateSpeedup();
+                }
                 attackTime = attackSpeed;
                 isAttacked = false;
                 // if (intersect)  //collider do ataku
@@ -61,6 +71,8 @@ public class Enemy : MonoBehaviour
 
     public void takeDamage()
     {
+        gameController.calculateSpeeddown();
+
         Destroy(this.gameObject);
     }
 
@@ -73,7 +85,13 @@ public class Enemy : MonoBehaviour
         /// jesli rowny
         if (!isJumping)
         {
-            if (Mathf.Abs(this.transform.position.y - player.transform.position.y) < 0.3f)
+            Collider2D hitCollider = Physics2D.OverlapCircle(new Vector2(this.transform.position.x + this.translateAttackCircle.x, this.transform.position.y + this.translateAttackCircle.y), 0.3f, palyerLayerMask);
+            if (hitCollider != null)
+            {
+                this.isAttacked = true;
+            }
+
+                if (Mathf.Abs(this.transform.position.y - player.transform.position.y) < 0.3f)
             {
                 ///Ustawiæ dobr¹ pozycje dla OverlapSphere
                 Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnGround.x, this.transform.position.y + this.translateSphereOnGround.y), 0.3f, groundLayerMask);
@@ -189,12 +207,19 @@ public class Enemy : MonoBehaviour
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawSphere(this.transform.position + new Vector3(0,-1,0), 0.6f);
+
+        Gizmos.color = Color.gray;
+        Gizmos.DrawSphere(this.transform.position + new Vector3(translateAttackCircle.x, translateAttackCircle.y,0), 0.6f);
     }
 
     void calculatexSphereTranslate()
     {
-        if(targetPos.x>0) { translateSphereOnGround = new Vector3(xSphereTranslate,-1f,0f); }
-        else  { translateSphereOnGround = new Vector3(-xSphereTranslate,-1f,0f); }
+        if(targetPos.x>0) { translateSphereOnGround = new Vector3(xSphereTranslate,-1f,0f); translateAttackCircle = new Vector2(1, 0); }
+        else  { translateSphereOnGround = new Vector3(-xSphereTranslate,-1f,0f); translateAttackCircle = new Vector2(-1, 0); }
     }
 
+    public void giveDamage()
+    {
+
+    }
 }

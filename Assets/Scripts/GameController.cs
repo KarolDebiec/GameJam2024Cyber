@@ -43,4 +43,17 @@ public class GameController : MonoBehaviour
             minPlayerSpeedMultiplier -= value / 2f;
         }
     }
+
+    public void calculateSpeedup()
+    {
+        float randomNumber = Random.Range(0.05f, 0.15f);
+        playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier *randomNumber;
+        minPlayerSpeedMultiplier = minPlayerSpeedMultiplier + minPlayerSpeedMultiplier * randomNumber;
+    }
+    public void calculateSpeeddown()
+    {
+        float randomNumber = Random.Range(0.05f, 0.15f);
+        playerSpeedMultiplier = playerSpeedMultiplier - playerSpeedMultiplier * randomNumber;
+        minPlayerSpeedMultiplier = minPlayerSpeedMultiplier - minPlayerSpeedMultiplier * randomNumber;
+    }
 }
