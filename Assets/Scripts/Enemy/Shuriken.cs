@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class Shuriken : MonoBehaviour
 {
+    private GameController gameController;
     float rotationSpeed = 1;
     Vector2 targetPos = Vector2.zero;
     Vector2 direction = Vector2.zero;
@@ -21,6 +22,7 @@ public class Shuriken : MonoBehaviour
         direction.Normalize();
         speed = 7.0f;
         liveTime = 4.0f;
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
     private void FixedUpdate()
     {
@@ -48,7 +50,7 @@ public class Shuriken : MonoBehaviour
     {
         if (collision.gameObject.tag == ("Player"))
         {
-            //tu damagem;
+            gameController.calculateSpeedup();
             Destroy(this.gameObject);
         }
     }
