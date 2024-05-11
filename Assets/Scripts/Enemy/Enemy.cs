@@ -158,7 +158,7 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnHight.x, this.transform.position.y + this.translateSphereOnHight.y), 0.5f, groundLayerMask);
+                    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnHight.x, this.transform.position.y + this.translateSphereOnHight.y), 2f, groundLayerMask);
                     if (hitColliders.Length > 0)
                     {
                         this.targetPos = this.player.transform.position - this.transform.position;
@@ -223,7 +223,7 @@ public class Enemy : MonoBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(this.transform.position + translateSphereOnGround, 0.25f);
             Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(this.transform.position + translateSphereOnHight, 0.5f);
+            Gizmos.DrawSphere(this.transform.position + translateSphereOnHight, 2.0f);
 
             Gizmos.color = Color.magenta;
             Gizmos.DrawSphere(this.transform.position + new Vector3(0, -0.85f, 0), 0.1f);
