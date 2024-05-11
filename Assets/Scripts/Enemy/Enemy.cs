@@ -244,22 +244,23 @@ public class Enemy : MonoBehaviour
         {
             if (targetPos.x > 0) {
 
-            translateSphereOnGround = new Vector3(xSphereTranslate, -0.70f, 0f); translateAttackCircle = new Vector2(1, 0);
+            translateSphereOnGround = new Vector3(xSphereTranslate, -0.70f, 0f); translateAttackCircle = new Vector2(0.7f, 0);
 
+            if (isRotated)
+            {
+                this.transform.Rotate(0.0f, 180.0f, 0.0f, Space.Self);
+                isRotated = false;
+            }
+        }
+            else {
+            translateSphereOnGround = new Vector3(-xSphereTranslate, -0.70f, 0f); translateAttackCircle = new Vector2(-0.7f, 0);
+            
+          
 
             if (!isRotated)
             {
                 this.transform.Rotate(0.0f, 180.0f, 0.0f, Space.Self);
                 isRotated = true;
-            }
-        }
-            else {
-            translateSphereOnGround = new Vector3(-xSphereTranslate, -0.70f, 0f); translateAttackCircle = new Vector2(-1, 0);
-            
-            if (isRotated)
-            {
-                this.transform.Rotate(0.0f, 180.0f, 0.0f, Space.Self);
-                isRotated = false;
             }
         }
         }
