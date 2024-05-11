@@ -5,7 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
+//using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Enemy : MonoBehaviour
 {
@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] LayerMask groundLayerMask;
     [SerializeField] LayerMask palyerLayerMask;
     [SerializeField] GameObject player;
+    [SerializeField] Animator animator;
     public float attackTime;
     public Vector3 targetPos = new Vector3(0, 0, 0);
     public Vector3 translateSphereOnHight = new Vector3(0, 3, 0);
@@ -49,7 +50,7 @@ public class Enemy : MonoBehaviour
         translateSphereOnHight = new Vector3(0, 3, 0);
         translateSphereOnGround = new Vector3(-1, -0.70f, 0);
         multipleGravity = 5.0f;
-        attackSpeed = 0.5f;
+        attackSpeed = 0.2f;
 }
     // Update is called once per frame
     private void FixedUpdate()
@@ -64,6 +65,7 @@ public class Enemy : MonoBehaviour
                 Collider2D hitCollider = Physics2D.OverlapCircle(new Vector2(this.transform.position.x + this.translateAttackCircle.x, this.transform.position.y + this.translateAttackCircle.y), 0.3f, palyerLayerMask);
                 if (hitCollider != null)
                 {
+                    animator.SetTrigger("enemyAttack");
                     gameController.calculateSpeedup();
                 }
                 attackTime = attackSpeed;
@@ -100,6 +102,7 @@ public class Enemy : MonoBehaviour
             if (hitCollider != null && isAttacked == false)
             {
                 this.isAttacked = true;
+
             }
 
             if (Mathf.Abs(this.transform.position.y - player.transform.position.y) < 0.3f)
@@ -219,7 +222,7 @@ public class Enemy : MonoBehaviour
     
         void OnDrawGizmos()
         {
-            // Draw a yellow sphere at the transform's position
+           /* // Draw a yellow sphere at the transform's position
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(this.transform.position + translateSphereOnGround, 0.25f);
             Gizmos.color = Color.blue;
@@ -229,7 +232,7 @@ public class Enemy : MonoBehaviour
             Gizmos.DrawSphere(this.transform.position + new Vector3(0, -0.85f, 0), 0.1f);
 
             Gizmos.color = Color.gray;
-            Gizmos.DrawSphere(this.transform.position + new Vector3(translateAttackCircle.x, translateAttackCircle.y, 0), 0.3f);
+            Gizmos.DrawSphere(this.transform.position + new Vector3(translateAttackCircle.x, translateAttackCircle.y, 0), 0.3f);*/
         }
 
         void calculatexSphereTranslate()
