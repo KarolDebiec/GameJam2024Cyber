@@ -131,6 +131,8 @@ public class CharacterController2D : MonoBehaviour
                     //transform.Translate(new Vector3(-4, 0, 0));
                     m_Rigidbody2D.AddForce(new Vector2(-2000f * gameController.playerSpeedMultiplier, 0f));
                 }
+                bodyAnimator.SetTrigger("dash");
+                legsAnimator.SetTrigger("dash");
                 GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerDashSoundClip();
                 canDash = false;
             }
