@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public float score;
@@ -20,7 +21,19 @@ public class GameController : MonoBehaviour
     private bool isPlayerDead;
     void Update()
     {
-        if(playerSpeedMultiplier < maxPlayerSpeedMultiplier)
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            SceneManager.LoadScene(0);
+        }
+        if (playerSpeedMultiplier < maxPlayerSpeedMultiplier)
         {
             enemySpeedMultiplier += speedGainFactor * Time.deltaTime;
             playerSpeedMultiplier += speedGainFactor * Time.deltaTime;
@@ -105,7 +118,6 @@ public class GameController : MonoBehaviour
 
     private IEnumerator camShake()
     {
-        Debug.Log("shaky cam");
         cinemachineVirtualCamera.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 2f;
         yield return new WaitForSeconds(0.4f);
         cinemachineVirtualCamera.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
