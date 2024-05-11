@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject player;
     public float attackTime;
     public Vector3 targetPos = new Vector3(0, 0, 0);
-    public Vector3 translateSphereOnHight = new Vector3(0, 2, 0);
+    public Vector3 translateSphereOnHight = new Vector3(0, 3, 0);
     public Vector3 translateSphereOnGround = new Vector3(-1, -0.7f, 0);
     public Vector2 translateAttackCircle = new Vector2(0, 0);
     //float ySphereTranslate = 1;
@@ -49,7 +49,8 @@ public class Enemy : MonoBehaviour
         translateSphereOnHight = new Vector3(0, 3, 0);
         translateSphereOnGround = new Vector3(-1, -0.70f, 0);
         multipleGravity = 5.0f;
-    }
+        attackSpeed = 0.5f;
+}
     // Update is called once per frame
     private void FixedUpdate()
     {
@@ -85,8 +86,10 @@ public class Enemy : MonoBehaviour
 
     private void movement()
     {
-
-
+        this.targetPos = this.player.transform.position - this.transform.position;
+        this.targetPos.y = 0;
+        this.targetPos.z = 0;
+        this.targetPos.Normalize();
         /// sprawdzenie y
 
         /// jesli rowny
@@ -129,41 +132,15 @@ public class Enemy : MonoBehaviour
             /// jesli wiekszy
             else if (this.transform.position.y > player.transform.position.y)
             {
-                if (!this.isTooHigh)
-                {
-                    this.targetPos = this.player.transform.position - this.transform.position;
-                    isTooHigh = true;
-                    this.targetPos.y = 0;
-                    this.targetPos.Normalize();
-                }
-                else
-                {
+                
 
-                    //opis ruchu
-                    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y + (-0.6f)), 0.3f, groundLayerMask);
-                    if (hitColliders.Length > 0)
-                    {
-                        //skok w przepaœæ
-                        if (hitColliders[0].CompareTag("Ground"))
-                        {
-                            this.targetPos.y = 0;
-                            this.targetPos.Normalize();
-                            this.transform.position += this.targetPos * Time.deltaTime * speed;
-                        }
-                        else
-                        {
-                            isJumping = true;
-                            yVelocity = -1.5f;
-                        }
-                    }
-                    else
-                    {
-                        isJumping = true;
-                        yVelocity = 1.0f;
-                    }
-
-
-                }
+                  
+                 isJumping = true;
+                yVelocity = -1.5f;
+                isTooHigh = false;
+                   
+                        
+                   
             }
             else if (this.transform.position.y < player.transform.position.y)
             {
@@ -181,16 +158,25 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnHight.x, this.transform.position.y + this.translateSphereOnHight.y), 0.3f, groundLayerMask);
+                    Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnHight.x, this.transform.position.y + this.translateSphereOnHight.y), 0.5f, groundLayerMask);
                     if (hitColliders.Length > 0)
                     {
-                        
+                        this.targetPos = this.player.transform.position - this.transform.position;
+                        this.targetPos.Normalize();
                         this.isJumping = true;
 
                         yVelocity = 25.0f;
 
                     }
-                    else { this.transform.position += this.targetPos * Time.deltaTime * speed; }
+                    else {
+                        Collider2D[] col = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnGround.x, this.transform.position.y + this.translateSphereOnGround.y), 0.3f, groundLayerMask);
+                        if (!(col.Length > 0) && this.transform.position.y> 2.5f)
+                        {
+                            isJumping = true;
+                            yVelocity = 35.0f;
+                        }
+                            this.transform.position += this.targetPos * Time.deltaTime * speed; 
+                    }
 
                 }
 
@@ -198,7 +184,7 @@ public class Enemy : MonoBehaviour
 
             }
         }
-        if (isJumping)
+       else if (isJumping)
         {
 
 
@@ -206,18 +192,14 @@ public class Enemy : MonoBehaviour
             float posx = this.targetPos.x * Time.deltaTime * speed;
             transform.position += new Vector3(posx, posy, 0);
             yVelocity = yVelocity + yAcceleration * multipleGravity * Time.deltaTime;
-
+            isNotEnoughtHeight = false;
+            isTooHigh = false;
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y + (-0.80f)), 0.1f, groundLayerMask);
             if (hitColliders.Length > 0)
             {
-                if (!hitColliders[0].CompareTag("Ground"))
-                {
+               
                     yVelocity = 0.0f; isJumping = false;
 
-                    isNotEnoughtHeight = false;
-                    isTooHigh = false;
-
-                }
 
 
             };
@@ -241,7 +223,7 @@ public class Enemy : MonoBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(this.transform.position + translateSphereOnGround, 0.25f);
             Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(this.transform.position + translateSphereOnHight, 1.2f);
+            Gizmos.DrawSphere(this.transform.position + translateSphereOnHight, 0.5f);
 
             Gizmos.color = Color.magenta;
             Gizmos.DrawSphere(this.transform.position + new Vector3(0, -0.85f, 0), 0.1f);
