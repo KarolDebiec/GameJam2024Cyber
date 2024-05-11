@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
         {
             enemySpeedMultiplier += speedGainFactor * Time.deltaTime;
             playerSpeedMultiplier += speedGainFactor * Time.deltaTime;
-            minPlayerSpeedMultiplier += (speedGainFactor * Time.deltaTime) / 2f;
+            minPlayerSpeedMultiplier += (speedGainFactor * Time.deltaTime) / 3f;
             playerTrail.time = playerSpeedMultiplier;
             speedSlider.value = playerSpeedMultiplier;
         }
@@ -64,7 +64,7 @@ public class GameController : MonoBehaviour
         if (playerSpeedMultiplier + playerSpeedMultiplier * randomNumber < maxPlayerSpeedMultiplier)
         {
             playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier * randomNumber;
-            minPlayerSpeedMultiplier = minPlayerSpeedMultiplier + minPlayerSpeedMultiplier * randomNumber; 
+            minPlayerSpeedMultiplier +=  (playerSpeedMultiplier * randomNumber)/4f; 
             if(score >= 10)
             {
                 score -= 10;
@@ -80,7 +80,7 @@ public class GameController : MonoBehaviour
         score += 100;
         float randomNumber = Random.Range(0.3f, 0.8f);
         if (playerSpeedMultiplier - playerSpeedMultiplier * randomNumber > minPlayerSpeedMultiplier)
-            playerSpeedMultiplier = playerSpeedMultiplier - playerSpeedMultiplier * randomNumber;
+            playerSpeedMultiplier = playerSpeedMultiplier - (playerSpeedMultiplier * randomNumber)*0.2f;
         else playerSpeedMultiplier = minPlayerSpeedMultiplier;
 
 
