@@ -184,7 +184,7 @@ public class Enemy : MonoBehaviour
                     Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnHight.x, this.transform.position.y + this.translateSphereOnHight.y), 0.3f, groundLayerMask);
                     if (hitColliders.Length > 0)
                     {
-                        Debug.Log("nanana");
+                        
                         this.isJumping = true;
 
                         yVelocity = 25.0f;
@@ -231,7 +231,7 @@ public class Enemy : MonoBehaviour
         //
         //jesli tak odejsc do punktu skoku
 
-        Debug.Log(isJumping);
+       
     }
         
     
