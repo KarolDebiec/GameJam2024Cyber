@@ -73,7 +73,7 @@ public class GameController : MonoBehaviour
 
     public void calculateSpeedup()
     {
-        float randomNumber = Random.Range(0.05f, 0.10f);
+        float randomNumber = Random.Range(0.05f, 0.069f);
         if (playerSpeedMultiplier + playerSpeedMultiplier * randomNumber < maxPlayerSpeedMultiplier)
         {
             StartCoroutine(camShake());

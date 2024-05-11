@@ -9,6 +9,7 @@ public class RangeEnemy : MonoBehaviour
     [SerializeField] LayerMask groundLayerMask;
     [SerializeField] LayerMask palyerLayerMask;
     [SerializeField] Transform player;
+    public Animator animator;
     public float attackTime;
     public Vector3 targetPos = new Vector3(0, 0, 0);
     public Vector3 translateSphereOnHight = new Vector3(0, 2, 0);
@@ -43,12 +44,13 @@ public class RangeEnemy : MonoBehaviour
         speed = 6.0f;
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         this.distanceToPlayer = 15.0f;
-        attackSpeed = 0.5f;
+        attackSpeed = 1.5f;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
     // Update is called once per frame
     public void Throw()
     {
+        animator.SetTrigger("enemyAttack");
         Instantiate(myPrefab, this.transform.position, Quaternion.identity);
     }
     private void FixedUpdate()
@@ -71,7 +73,7 @@ public class RangeEnemy : MonoBehaviour
             if (attackTime <= 0.0f)
             {
 
-                attackTime = 1.0f;
+                attackTime = 3.0f;
                 this.Throw();
                 // if (intersect)  //collider do ataku
                 {

@@ -78,7 +78,7 @@ public class CharacterController2D : MonoBehaviour
                 bodyAnimator.SetBool("isRunning", false);
                 legsAnimator.SetBool("isRunning", false);
             }
-            if (canJump && Input.GetAxisRaw("Vertical") > 0.9f)
+            if (canJump && (Input.GetAxisRaw("Vertical") > 0.9f || Input.GetButtonDown("Jump")))
             {
                 canJump = false;
                 if (!m_Grounded)
