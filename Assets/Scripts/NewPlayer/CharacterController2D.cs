@@ -31,6 +31,11 @@ public class CharacterController2D : MonoBehaviour
     private float jumpWaitTime = 0f;
     private bool canJump = true;
 
+    public float dashWaitFactor = 0.5f;
+    private float dashWaitTime = 0f;
+    private bool canDash = true;
+
+
     private float jumpForce;
     private float defaulGravityForce;
 
@@ -75,6 +80,7 @@ public class CharacterController2D : MonoBehaviour
                 jumpAnticipationTime = 0;
                 isAnticipating = true;
             }
+            
             Move(gameController.playerSpeedMultiplier * horizontalMove * Time.fixedDeltaTime, false, true);
         }
         if(!canJump)
@@ -95,9 +101,33 @@ public class CharacterController2D : MonoBehaviour
                 isAnticipating = false;
             }
         }
-        if(transform.position.y < 2)
+        if (!canDash)
+        {
+            dashWaitTime += Time.deltaTime;
+            if (dashWaitTime >= dashWaitFactor / gameController.playerSpeedMultiplier)
+            {
+                canDash = true;
+                dashWaitTime = 0;
+            }
+        }
+        if (transform.position.y < 2)
         {
             transform.position = new Vector3(transform.position.x, 2f, transform.position.z);
+        }
+        if (Input.GetButtonDown("Fire3") && canDash)
+        {
+           //dash here
+           if(transform.localScale.x > 0)
+           {
+                //transform.Translate(new Vector3(4,0,0));
+                m_Rigidbody2D.AddForce(new Vector2(2000f * gameController.playerSpeedMultiplier, 0f));
+            }
+           else
+           {
+                //transform.Translate(new Vector3(-4, 0, 0));
+                m_Rigidbody2D.AddForce(new Vector2(-2000f * gameController.playerSpeedMultiplier, 0f));
+            }
+            canDash = false;
         }
     }
     private void FixedUpdate()
@@ -112,14 +142,19 @@ public class CharacterController2D : MonoBehaviour
             if (colliders[i].gameObject != gameObject)
             {
                 m_Grounded = true;
+                
                 if (!wasGrounded)
                 {
                     OnLandEvent.Invoke();
+                    //bodyAnimator.SetBool("isJumping", false);
                     if (isAnticipating)
                     {
                         m_Grounded = false;
                         m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
                         m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
+                        GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerJumpSoundClip();
+                        bodyAnimator.SetBool("isJumping", true);
+                        legsAnimator.SetBool("isJumping", true);
                         m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
                         m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
                         ResetAnticipation();
@@ -204,12 +239,20 @@ public class CharacterController2D : MonoBehaviour
                 Flip();
             }
         }
+        if(m_Grounded)
+        {
+            bodyAnimator.SetBool("isJumping", false);
+            legsAnimator.SetBool("isJumping", false);
+        }
 
         if (m_Grounded && jump)
         {
             m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
             m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
             m_Grounded = false;
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerJumpSoundClip();
+            bodyAnimator.SetBool("isJumping", true);
+            legsAnimator.SetBool("isJumping", true);
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
         }
 	}

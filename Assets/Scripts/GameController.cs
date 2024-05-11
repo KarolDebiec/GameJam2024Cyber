@@ -26,7 +26,6 @@ public class GameController : MonoBehaviour
             playerSpeedMultiplier += speedGainFactor * Time.deltaTime;
             minPlayerSpeedMultiplier += (speedGainFactor * Time.deltaTime) / 2f;
             playerTrail.time = playerSpeedMultiplier;
-            score += playerSpeedMultiplier * Time.deltaTime;
             speedSlider.value = playerSpeedMultiplier;
         }
         else
@@ -49,6 +48,7 @@ public class GameController : MonoBehaviour
             playerSpeedMultiplier -= value;
             minPlayerSpeedMultiplier -= value / 2f;
         }
+        score += 100;
     }
 
     public void calculateSpeedup()
@@ -57,7 +57,11 @@ public class GameController : MonoBehaviour
         if (playerSpeedMultiplier + playerSpeedMultiplier * randomNumber < maxPlayerSpeedMultiplier)
         {
             playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier * randomNumber;
-            minPlayerSpeedMultiplier = minPlayerSpeedMultiplier + minPlayerSpeedMultiplier * randomNumber;
+            minPlayerSpeedMultiplier = minPlayerSpeedMultiplier + minPlayerSpeedMultiplier * randomNumber; 
+            if(score >= 10)
+            {
+                score -= 10;
+            }
         }
         else
         {
@@ -66,6 +70,7 @@ public class GameController : MonoBehaviour
     }
     public void calculateSpeeddown()
     {
+        score += 100;
         float randomNumber = Random.Range(0.05f, 0.10f);
         playerSpeedMultiplier = playerSpeedMultiplier - playerSpeedMultiplier * randomNumber;
     }

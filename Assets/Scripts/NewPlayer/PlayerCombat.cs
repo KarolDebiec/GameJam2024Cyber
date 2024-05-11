@@ -12,12 +12,14 @@ public class PlayerCombat : MonoBehaviour
     public LayerMask enemyLayer;
     public CharacterController2D characterController;
     private bool isAttacking;
+    private bool shouldAttack;
 
     
 
     private void Start()
     {
         isAttacking = false;
+        shouldAttack = false;
     }
 
     // Update is called once per frame
@@ -35,7 +37,15 @@ public class PlayerCombat : MonoBehaviour
     {
         isAttacking = true;
         bodyAnimator.SetTrigger("attack");
-        //yield return new WaitForSeconds(timeBetweenAttacks);
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerAttackSoundClip();
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            //Logika zabierania zycia
+            Debug.Log("hit");
+            enemy.GetComponent<Enemy>().takeDamage();
+        }
         isAttacking = false;
     }
 
