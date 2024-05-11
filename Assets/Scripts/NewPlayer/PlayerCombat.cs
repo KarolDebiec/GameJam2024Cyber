@@ -44,9 +44,17 @@ public class PlayerCombat : MonoBehaviour
             foreach (Collider2D enemy in hitEnemies)
             {
                 //Logika zabierania zycia
-                Debug.Log("hit");
-                enemy.GetComponent<Enemy>().takeDamage();
+               
+                var k = enemy.GetComponent<Enemy>();
+                if (k == null)
+                {
+                    var j = enemy.GetComponent<RangeEnemy>();
+                    if (j == null) { }
+                    else enemy.GetComponent<RangeEnemy>().takeDamage();
+                }
+                else enemy.GetComponent<Enemy>().takeDamage();
             }
+            
             isAttacking = false;
         }
     }

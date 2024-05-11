@@ -8,7 +8,7 @@ public class RangeEnemy : MonoBehaviour
     private GameController gameController;
     [SerializeField] LayerMask groundLayerMask;
     [SerializeField] LayerMask palyerLayerMask;
-    [SerializeField] GameObject player;
+    [SerializeField] Transform player;
     public float attackTime;
     public Vector3 targetPos = new Vector3(0, 0, 0);
     public Vector3 translateSphereOnHight = new Vector3(0, 2, 0);
@@ -44,6 +44,7 @@ public class RangeEnemy : MonoBehaviour
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         this.distanceToPlayer = 15.0f;
         attackSpeed = 0.5f;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
     // Update is called once per frame
     public void Throw()

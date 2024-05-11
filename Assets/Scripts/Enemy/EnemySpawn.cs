@@ -32,8 +32,9 @@ public class EnemySpawn : MonoBehaviour
         {
             for(int i = 0; i < how_much_enemy_to_respawn + gameController.playerSpeedMultiplier * 0.25f; i++)
             {
+                int randomNumber = Random.Range(1, 6);
                 Vector3  pos = generatePos();
-                Instantiate(myPrefab, pos, Quaternion.identity);
+                spwanEnemy(randomNumber, pos);
             }
             timer = basicRespawnTime - (basicRespawnTime*gameController.playerSpeedMultiplier*0.1f);
         }
@@ -41,6 +42,11 @@ public class EnemySpawn : MonoBehaviour
 
     }
 
+    void spwanEnemy(int index, Vector3 pos)
+    {
+        if (index < 4) Instantiate(enemy1, pos, Quaternion.identity);
+        else {pos.y=2.0f; Instantiate(enemy2, pos, Quaternion.identity); }
+    }
     private Vector3 generatePos()
     {
         Vector3 randomPoint = new(Random.Range(0f, 1f), Random.Range(0f, 1f));
