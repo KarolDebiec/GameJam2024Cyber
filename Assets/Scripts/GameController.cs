@@ -63,6 +63,7 @@ public class GameController : MonoBehaviour
         float randomNumber = Random.Range(0.05f, 0.10f);
         if (playerSpeedMultiplier + playerSpeedMultiplier * randomNumber < maxPlayerSpeedMultiplier)
         {
+            StartCoroutine(camShake());
             playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier * randomNumber;
             minPlayerSpeedMultiplier +=  (playerSpeedMultiplier * randomNumber)/4f; 
             if(score >= 10)
@@ -95,5 +96,13 @@ public class GameController : MonoBehaviour
         speedSlider.gameObject.SetActive(false);
         finalScoreText.gameObject.SetActive(true);
         GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController2D>().isPlayerDead = true;
+    }
+
+    private IEnumerator camShake()
+    {
+        Debug.Log("shaky cam");
+        cinemachineVirtualCamera.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 2f;
+        yield return new WaitForSeconds(0.4f);
+        cinemachineVirtualCamera.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
     }
 }
