@@ -11,7 +11,7 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Transform m_CeilingCheck;
     [SerializeField] private Animator bodyAnimator;
     [SerializeField] private Animator legsAnimator;
-
+    [SerializeField] public GameObject myPrefab;
     private GameController gameController;
     const float k_GroundedRadius = .2f;
     public bool m_Grounded;
@@ -19,6 +19,8 @@ public class CharacterController2D : MonoBehaviour
     private Rigidbody2D m_Rigidbody2D;
     private bool m_FacingRight = true;
     private Vector3 m_Velocity = Vector3.zero;
+
+   
 
     
     public float horizontalMove = 0f;
@@ -153,8 +155,11 @@ public class CharacterController2D : MonoBehaviour
             Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
             for (int i = 0; i < colliders.Length; i++)
             {
+                
+
                 if (colliders[i].gameObject != gameObject)
                 {
+                    Instantiate(myPrefab, this.transform.position, Quaternion.identity);
                     m_Grounded = true;
 
                     if (!wasGrounded)
@@ -175,10 +180,14 @@ public class CharacterController2D : MonoBehaviour
                         }
                     }
                 }
+
             }
+           
+           
         }
         else
         {
+           
             Move(0, false, false);
         }
 
