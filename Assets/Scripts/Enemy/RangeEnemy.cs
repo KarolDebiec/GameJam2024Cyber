@@ -194,7 +194,6 @@ public class RangeEnemy : MonoBehaviour
             float posx = this.targetPos.x * Time.deltaTime * speed;
             transform.position += new Vector3(posx, posy, 0);
             yVelocity = yVelocity + yAcceleration * Time.deltaTime;
-            Debug.Log(yVelocity);
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnGround.x, this.transform.position.y + this.translateSphereOnGround.y), 0.3f, groundLayerMask);
             if (hitColliders.Length > 0) { yVelocity = 0.0f; isJumping = false; };
 
