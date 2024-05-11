@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
 {
     public float score;
     public Text scoreText;
+    public Text scoreText2; //idk
     public Text finalScoreText;
     public Slider speedSlider;
     public TrailRenderer playerTrail;
@@ -48,6 +49,7 @@ public class GameController : MonoBehaviour
         if(scoreText.gameObject.activeSelf)
         {
             scoreText.text = score.ToString("F0");
+            scoreText2.text = scoreText.text;
         }
         if(isPlayerDead)
         {
@@ -109,6 +111,7 @@ public class GameController : MonoBehaviour
             isPlayerDead = true;
             finalScoreText.text = score.ToString("F0");
             scoreText.gameObject.SetActive(false);
+            scoreText2.gameObject.SetActive(false);
             speedSlider.gameObject.SetActive(false);
             finalScoreText.gameObject.SetActive(true);
             GetComponent<AudioController>().PlayPlayerDeathSoundClip();
