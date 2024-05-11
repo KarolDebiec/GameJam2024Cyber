@@ -6,9 +6,10 @@ public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] private Animator bodyAnimator;
     [SerializeField] private Animator legsAnimator;
-    [SerializeField] private Transform attackPoint;
-    [SerializeField] private float attackRange = 0.5f;
-    [SerializeField] private LayerMask enemyLayer;
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayer;
+    public CharacterController2D characterController;
 
     // Update is called once per frame
     void Update()
@@ -22,14 +23,10 @@ public class PlayerCombat : MonoBehaviour
 
     void Attack()
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
-
         bodyAnimator.SetBool("isAttacking", true);
-        foreach(Collider2D enemy in hitEnemies)
+        if (characterController.horizontalMove == 0f)
         {
-            //Logika zabierania zycia
-            Debug.Log("hit");
-            enemy.GetComponent<Enemy>().takeDamage();
+            legsAnimator.SetBool("isAttacking", true);
         }
     }
 
