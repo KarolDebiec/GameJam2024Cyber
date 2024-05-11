@@ -75,6 +75,7 @@ public class CharacterController2D : MonoBehaviour
                 jumpAnticipationTime = 0;
                 isAnticipating = true;
             }
+            
             Move(gameController.playerSpeedMultiplier * horizontalMove * Time.fixedDeltaTime, false, true);
         }
         if(!canJump)
@@ -112,15 +113,18 @@ public class CharacterController2D : MonoBehaviour
             if (colliders[i].gameObject != gameObject)
             {
                 m_Grounded = true;
+                
                 if (!wasGrounded)
                 {
                     OnLandEvent.Invoke();
+                    //bodyAnimator.SetBool("isJumping", false);
                     if (isAnticipating)
                     {
                         m_Grounded = false;
                         m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
                         m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
                         GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerJumpSoundClip();
+                        bodyAnimator.SetBool("isJumping", true);
                         m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
                         m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
                         ResetAnticipation();
@@ -205,6 +209,10 @@ public class CharacterController2D : MonoBehaviour
                 Flip();
             }
         }
+        if(m_Grounded)
+        {
+            bodyAnimator.SetBool("isJumping", false);
+        }
 
         if (m_Grounded && jump)
         {
@@ -212,6 +220,7 @@ public class CharacterController2D : MonoBehaviour
             m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
             m_Grounded = false;
             GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerJumpSoundClip();
+            bodyAnimator.SetBool("isJumping", true);
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
         }
 	}
