@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
-
     public float score;
     public TextMeshProUGUI scoreText;
     public Slider speedSlider;
@@ -55,13 +54,19 @@ public class GameController : MonoBehaviour
     public void calculateSpeedup()
     {
         float randomNumber = Random.Range(0.05f, 0.10f);
-        playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier *randomNumber;
-        minPlayerSpeedMultiplier = minPlayerSpeedMultiplier + minPlayerSpeedMultiplier * randomNumber;
+        if (playerSpeedMultiplier + playerSpeedMultiplier * randomNumber < maxPlayerSpeedMultiplier)
+        {
+            playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier * randomNumber;
+            minPlayerSpeedMultiplier = minPlayerSpeedMultiplier + minPlayerSpeedMultiplier * randomNumber;
+        }
+        else
+        {
+            //ded
+        }
     }
     public void calculateSpeeddown()
     {
         float randomNumber = Random.Range(0.05f, 0.10f);
         playerSpeedMultiplier = playerSpeedMultiplier - playerSpeedMultiplier * randomNumber;
-        minPlayerSpeedMultiplier = minPlayerSpeedMultiplier - minPlayerSpeedMultiplier * randomNumber;
     }
 }

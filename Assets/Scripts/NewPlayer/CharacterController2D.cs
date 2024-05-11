@@ -117,7 +117,6 @@ public class CharacterController2D : MonoBehaviour
                     OnLandEvent.Invoke();
                     if (isAnticipating)
                     {
-                        Debug.Log("on grounded : " + m_JumpForce);
                         m_Grounded = false;
                         m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
                         m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
