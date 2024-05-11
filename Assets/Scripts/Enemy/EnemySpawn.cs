@@ -12,7 +12,7 @@ public class EnemySpawn : MonoBehaviour
     private GameController gameController;
     private CinemachineBrain cinemachineBrain;
     private float timer = 0;
-    private float basicRespawnTime = 7.0f;
+    private float basicRespawnTime = 6.0f;
     private int how_much_enemy_to_respawn = 3;
     [SerializeField] public GameObject myPrefab;
     private void Start()
@@ -32,7 +32,7 @@ public class EnemySpawn : MonoBehaviour
         {
             for(int i = 0; i < how_much_enemy_to_respawn + gameController.playerSpeedMultiplier * 0.25f; i++)
             {
-                int randomNumber = Random.Range(1, 3);
+                int randomNumber = Random.Range(1, 6);
                 Vector3  pos = generatePos();
                 spwanEnemy(randomNumber, pos);
             }
