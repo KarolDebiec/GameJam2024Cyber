@@ -6,31 +6,37 @@ public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] private Animator bodyAnimator;
     [SerializeField] private Animator legsAnimator;
-    [SerializeField] private Transform attackPoint;
-    [SerializeField] private float attackRange = 0.5f;
-    [SerializeField] private LayerMask enemyLayer;
+    //[SerializeField] private float timeBetweenAttacks = 0f;
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayer;
+    public CharacterController2D characterController;
+    private bool isAttacking;
+
+    
+
+    private void Start()
+    {
+        isAttacking = false;
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Attack();
+            if (!isAttacking)
+                Attack();
         }
         
     }
 
-    void Attack()
+    private void Attack()
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
-
-        bodyAnimator.SetBool("isAttacking", true);
-        foreach(Collider2D enemy in hitEnemies)
-        {
-            //Logika zabierania zycia
-            Debug.Log("hit");
-            enemy.GetComponent<Enemy>().takeDamage();
-        }
+        isAttacking = true;
+        bodyAnimator.SetTrigger("attack");
+        //yield return new WaitForSeconds(timeBetweenAttacks);
+        isAttacking = false;
     }
 
     private void OnDrawGizmosSelected()
@@ -39,8 +45,4 @@ public class PlayerCombat : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
-    void StopAttacking()
-    {
-        bodyAnimator.SetBool("isAttacking", false);
-    }
 }

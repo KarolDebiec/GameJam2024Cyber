@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
+using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
+    public float score;
+    public TextMeshProUGUI scoreText;
+    public Slider speedSlider;
     public TrailRenderer playerTrail;
     public float enemySpeedMultiplier = 1.0f;
     public float playerSpeedMultiplier = 1.0f;
@@ -22,11 +26,14 @@ public class GameController : MonoBehaviour
             playerSpeedMultiplier += speedGainFactor * Time.deltaTime;
             minPlayerSpeedMultiplier += (speedGainFactor * Time.deltaTime) / 2f;
             playerTrail.time = playerSpeedMultiplier;
+            score += playerSpeedMultiplier * Time.deltaTime;
+            speedSlider.value = playerSpeedMultiplier;
         }
         else
         {
            //ded
         }
+        scoreText.text = score.ToString("F0");
     }
 
     public void SpeedUpPlayer(float value)
@@ -47,13 +54,19 @@ public class GameController : MonoBehaviour
     public void calculateSpeedup()
     {
         float randomNumber = Random.Range(0.05f, 0.10f);
-        playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier *randomNumber;
-        minPlayerSpeedMultiplier = minPlayerSpeedMultiplier + minPlayerSpeedMultiplier * randomNumber;
+        if (playerSpeedMultiplier + playerSpeedMultiplier * randomNumber < maxPlayerSpeedMultiplier)
+        {
+            playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier * randomNumber;
+            minPlayerSpeedMultiplier = minPlayerSpeedMultiplier + minPlayerSpeedMultiplier * randomNumber;
+        }
+        else
+        {
+            //ded
+        }
     }
     public void calculateSpeeddown()
     {
         float randomNumber = Random.Range(0.05f, 0.10f);
         playerSpeedMultiplier = playerSpeedMultiplier - playerSpeedMultiplier * randomNumber;
-        minPlayerSpeedMultiplier = minPlayerSpeedMultiplier - minPlayerSpeedMultiplier * randomNumber;
     }
 }

@@ -21,7 +21,7 @@ public class CharacterController2D : MonoBehaviour
     private Vector3 m_Velocity = Vector3.zero;
 
     
-    private float horizontalMove = 0f;
+    public float horizontalMove = 0f;
 
     public float jumpAnticipationFactor = 0.05f;
     private float jumpAnticipationTime = 0f;
@@ -62,6 +62,11 @@ public class CharacterController2D : MonoBehaviour
     private void Update()
     {
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+        if (horizontalMove == 0)
+        {
+            bodyAnimator.SetBool("isRunning", false);
+            legsAnimator.SetBool("isRunning", false);
+        }
         if (canJump && (Input.GetButtonDown("Jump") || Input.GetAxisRaw("Vertical") > 0.9f))
         {
             canJump = false;
@@ -90,6 +95,10 @@ public class CharacterController2D : MonoBehaviour
                 isAnticipating = false;
             }
         }
+        if(transform.position.y < 2)
+        {
+            transform.position = new Vector3(transform.position.x, 2f, transform.position.z);
+        }
     }
     private void FixedUpdate()
     {
@@ -108,7 +117,6 @@ public class CharacterController2D : MonoBehaviour
                     OnLandEvent.Invoke();
                     if (isAnticipating)
                     {
-                        Debug.Log("on grounded : " + m_JumpForce);
                         m_Grounded = false;
                         m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
                         m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
@@ -143,8 +151,10 @@ public class CharacterController2D : MonoBehaviour
 
 			// Move the character by finding the target velocity
 			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
-			// And then smoothing it out and applying it to the character
-			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+            bodyAnimator.SetBool("isRunning", true);
+            legsAnimator.SetBool("isRunning", true);
+            // And then smoothing it out and applying it to the character
+            m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
 			// If the input is moving the player right and the player is facing left...
 			if (move > 0 && !m_FacingRight)
