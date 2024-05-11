@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    [SerializeField] private Animator bodyAnimator;
+    [SerializeField] private Animator legsAnimator;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private float attackRange = 0.5f;
     [SerializeField] private LayerMask enemyLayer;
@@ -23,6 +24,7 @@ public class PlayerCombat : MonoBehaviour
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
 
+        bodyAnimator.SetBool("isAttacking", true);
         foreach(Collider2D enemy in hitEnemies)
         {
             //Logika zabierania zycia
@@ -35,5 +37,10 @@ public class PlayerCombat : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
+    void StopAttacking()
+    {
+        bodyAnimator.SetBool("isAttacking", false);
     }
 }
