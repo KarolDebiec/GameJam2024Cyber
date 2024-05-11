@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8213557465408246572}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
   attackTime: 0
   targetPos: {x: 0, y: 0, z: 0}
   translateSphereOnHight: {x: 0, y: 2, z: 0}
-  translateSphereOnGround: {x: -1, y: -1, z: 0}
+  translateSphereOnGround: {x: -1, y: -0.6, z: 0}
   translateAttackCircle: {x: 0, y: 0}
   speed: 0
   attackRange: 0
@@ -124,6 +124,7 @@ MonoBehaviour:
   isJumping: 0
   yVelocity: 0
   yAcceleration: -9.81
+  multipleGravity: 5
 --- !u!70 &8213557465408246572
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

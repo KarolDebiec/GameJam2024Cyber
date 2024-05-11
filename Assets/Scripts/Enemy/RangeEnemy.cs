@@ -70,7 +70,7 @@ public class RangeEnemy : MonoBehaviour
             if (attackTime <= 0.0f)
             {
 
-                attackTime = attackSpeed;
+                attackTime = 0.001f;
                 this.Throw();
                 // if (intersect)  //collider do ataku
                 {
