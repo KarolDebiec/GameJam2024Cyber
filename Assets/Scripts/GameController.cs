@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     public float score;
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI finalScoreText;
+    public Text scoreText;
+    public Text finalScoreText;
     public Slider speedSlider;
     public TrailRenderer playerTrail;
     public float enemySpeedMultiplier = 1.0f;
