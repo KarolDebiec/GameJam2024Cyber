@@ -35,6 +35,7 @@ public class PlayerCombat : MonoBehaviour
     {
         isAttacking = true;
         bodyAnimator.SetTrigger("attack");
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerAttackSoundClip();
         //yield return new WaitForSeconds(timeBetweenAttacks);
         isAttacking = false;
     }
