@@ -305,6 +305,8 @@ MonoBehaviour:
   horizontalMove: 0
   jumpAnticipationFactor: 0.2
   jumpWaitFactor: 0.5
+  dashWaitFactor: 0.5
+  isPlayerDead: 0
   runSpeed: 80
   m_MaxSpeed: 16
   m_Acceleration: 15
@@ -326,7 +328,7 @@ MonoBehaviour:
   bodyAnimator: {fileID: 3500779406294606983}
   legsAnimator: {fileID: 68102102363314553}
   attackPoint: {fileID: 8485887694331945634}
-  attackRange: 1
+  attackRange: 1.5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
