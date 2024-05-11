@@ -31,6 +31,11 @@ public class CharacterController2D : MonoBehaviour
     private float jumpWaitTime = 0f;
     private bool canJump = true;
 
+    public float dashWaitFactor = 0.5f;
+    private float dashWaitTime = 0f;
+    private bool canDash = true;
+
+
     private float jumpForce;
     private float defaulGravityForce;
 
@@ -96,9 +101,33 @@ public class CharacterController2D : MonoBehaviour
                 isAnticipating = false;
             }
         }
-        if(transform.position.y < 2)
+        if (!canDash)
+        {
+            dashWaitTime += Time.deltaTime;
+            if (dashWaitTime >= dashWaitFactor / gameController.playerSpeedMultiplier)
+            {
+                canDash = true;
+                dashWaitTime = 0;
+            }
+        }
+        if (transform.position.y < 2)
         {
             transform.position = new Vector3(transform.position.x, 2f, transform.position.z);
+        }
+        if (Input.GetButtonDown("Fire3") && canDash)
+        {
+           //dash here
+           if(transform.localScale.x > 0)
+           {
+                //transform.Translate(new Vector3(4,0,0));
+                m_Rigidbody2D.AddForce(new Vector2(2000f * gameController.playerSpeedMultiplier, 0f));
+            }
+           else
+           {
+                //transform.Translate(new Vector3(-4, 0, 0));
+                m_Rigidbody2D.AddForce(new Vector2(-2000f * gameController.playerSpeedMultiplier, 0f));
+            }
+            canDash = false;
         }
     }
     private void FixedUpdate()
