@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            //dead
+           //ded
         }
     }
 
@@ -46,13 +46,13 @@ public class GameController : MonoBehaviour
 
     public void calculateSpeedup()
     {
-        float randomNumber = Random.Range(0.05f, 0.15f);
+        float randomNumber = Random.Range(0.05f, 0.10f);
         playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier *randomNumber;
         minPlayerSpeedMultiplier = minPlayerSpeedMultiplier + minPlayerSpeedMultiplier * randomNumber;
     }
     public void calculateSpeeddown()
     {
-        float randomNumber = Random.Range(0.05f, 0.15f);
+        float randomNumber = Random.Range(0.05f, 0.10f);
         playerSpeedMultiplier = playerSpeedMultiplier - playerSpeedMultiplier * randomNumber;
         minPlayerSpeedMultiplier = minPlayerSpeedMultiplier - minPlayerSpeedMultiplier * randomNumber;
     }

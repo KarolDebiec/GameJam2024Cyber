@@ -86,7 +86,7 @@ public class Enemy : MonoBehaviour
         if (!isJumping)
         {
             Collider2D hitCollider = Physics2D.OverlapCircle(new Vector2(this.transform.position.x + this.translateAttackCircle.x, this.transform.position.y + this.translateAttackCircle.y), 0.3f, palyerLayerMask);
-            if (hitCollider != null)
+            if (hitCollider != null && isAttacked == false)
             {
                 this.isAttacked = true;
             }
