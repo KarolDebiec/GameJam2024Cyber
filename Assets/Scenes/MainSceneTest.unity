@@ -983,7 +983,7 @@ Transform:
   m_GameObject: {fileID: 895309699}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.49999186, y: 8, z: -10}
+  m_LocalPosition: {x: 0.49998292, y: 8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1231,7 +1231,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.65
+  m_fontSize: 50.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1882,6 +1882,7 @@ GameObject:
   - component: {fileID: 1623251913}
   - component: {fileID: 1623251915}
   - component: {fileID: 1623251914}
+  - component: {fileID: 1623251916}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -1946,6 +1947,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1623251912}
   m_CullTransparentMesh: 1
+--- !u!114 &1623251916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623251912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1786842eed42673408f0d3b7b8182e62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 630764173}
+  image: {fileID: 1623251914}
 --- !u!4 &1738268372 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7294902050145813918, guid: 0aefe885a1814054b9d72bdc27094f49, type: 3}
