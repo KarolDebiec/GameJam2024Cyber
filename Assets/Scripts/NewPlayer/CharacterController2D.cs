@@ -35,6 +35,8 @@ public class CharacterController2D : MonoBehaviour
     private float dashWaitTime = 0f;
     private bool canDash = true;
 
+    public bool isPlayerDead = false;
+
 
     private float jumpForce;
     private float defaulGravityForce;
@@ -66,102 +68,118 @@ public class CharacterController2D : MonoBehaviour
     }
     private void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-        if (horizontalMove == 0)
+        if (!isPlayerDead)
         {
-            bodyAnimator.SetBool("isRunning", false);
-            legsAnimator.SetBool("isRunning", false);
-        }
-        if (canJump && (Input.GetButtonDown("Jump") || Input.GetAxisRaw("Vertical") > 0.9f))
-        {
-            canJump = false;
-            if(!m_Grounded)
+            horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+            if (horizontalMove == 0)
             {
-                jumpAnticipationTime = 0;
-                isAnticipating = true;
+                bodyAnimator.SetBool("isRunning", false);
+                legsAnimator.SetBool("isRunning", false);
             }
-            
-            Move(gameController.playerSpeedMultiplier * horizontalMove * Time.fixedDeltaTime, false, true);
-        }
-        if(!canJump)
-        {
-            jumpWaitTime += Time.deltaTime;
-            if(jumpWaitTime >= jumpWaitFactor/ gameController.playerSpeedMultiplier)
+            if (canJump && Input.GetAxisRaw("Vertical") > 0.9f)
             {
-                canJump = true;
-                jumpWaitTime = 0;
-            }
-        }
+                canJump = false;
+                if (!m_Grounded)
+                {
+                    jumpAnticipationTime = 0;
+                    isAnticipating = true;
+                }
 
-        if(isAnticipating)
-        {
-            jumpAnticipationTime += Time.deltaTime;
-            if(jumpAnticipationTime >= jumpAnticipationFactor)
+                Move(gameController.playerSpeedMultiplier * horizontalMove * Time.fixedDeltaTime, false, true);
+            }
+            if (!canJump)
             {
-                isAnticipating = false;
+                jumpWaitTime += Time.deltaTime;
+                if (jumpWaitTime >= jumpWaitFactor / gameController.playerSpeedMultiplier)
+                {
+                    canJump = true;
+                    jumpWaitTime = 0;
+                }
             }
-        }
-        if (!canDash)
-        {
-            dashWaitTime += Time.deltaTime;
-            if (dashWaitTime >= dashWaitFactor / gameController.playerSpeedMultiplier)
+
+            if (isAnticipating)
             {
-                canDash = true;
-                dashWaitTime = 0;
+                jumpAnticipationTime += Time.deltaTime;
+                if (jumpAnticipationTime >= jumpAnticipationFactor)
+                {
+                    isAnticipating = false;
+                }
+            }
+            if (!canDash)
+            {
+                dashWaitTime += Time.deltaTime;
+                if (dashWaitTime >= dashWaitFactor / gameController.playerSpeedMultiplier)
+                {
+                    canDash = true;
+                    dashWaitTime = 0;
+                }
+            }
+            if (transform.position.y < 2)
+            {
+                transform.position = new Vector3(transform.position.x, 2f, transform.position.z);
+            }
+            if (Input.GetButtonDown("Fire3") && canDash)
+            {
+                //dash here
+                if (transform.localScale.x > 0)
+                {
+                    //transform.Translate(new Vector3(4,0,0));
+                    m_Rigidbody2D.AddForce(new Vector2(2000f * gameController.playerSpeedMultiplier, 0f));
+                }
+                else
+                {
+                    //transform.Translate(new Vector3(-4, 0, 0));
+                    m_Rigidbody2D.AddForce(new Vector2(-2000f * gameController.playerSpeedMultiplier, 0f));
+                }
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerDashSoundClip();
+                canDash = false;
             }
         }
-        if (transform.position.y < 2)
+        else
         {
-            transform.position = new Vector3(transform.position.x, 2f, transform.position.z);
-        }
-        if (Input.GetButtonDown("Fire3") && canDash)
-        {
-           //dash here
-           if(transform.localScale.x > 0)
-           {
-                //transform.Translate(new Vector3(4,0,0));
-                m_Rigidbody2D.AddForce(new Vector2(2000f * gameController.playerSpeedMultiplier, 0f));
-            }
-           else
-           {
-                //transform.Translate(new Vector3(-4, 0, 0));
-                m_Rigidbody2D.AddForce(new Vector2(-2000f * gameController.playerSpeedMultiplier, 0f));
-            }
-            canDash = false;
+            Move(0, false, false);
         }
     }
     private void FixedUpdate()
     {
-        Move(gameController.playerSpeedMultiplier * horizontalMove * Time.fixedDeltaTime, false, false);
-        bool wasGrounded = m_Grounded;
-        m_Grounded = false;
-
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
-        for (int i = 0; i < colliders.Length; i++)
+        if (!isPlayerDead)
         {
-            if (colliders[i].gameObject != gameObject)
+            Move(gameController.playerSpeedMultiplier * horizontalMove * Time.fixedDeltaTime, false, false);
+            bool wasGrounded = m_Grounded;
+            m_Grounded = false;
+
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
+            for (int i = 0; i < colliders.Length; i++)
             {
-                m_Grounded = true;
-                
-                if (!wasGrounded)
+                if (colliders[i].gameObject != gameObject)
                 {
-                    OnLandEvent.Invoke();
-                    //bodyAnimator.SetBool("isJumping", false);
-                    if (isAnticipating)
+                    m_Grounded = true;
+
+                    if (!wasGrounded)
                     {
-                        m_Grounded = false;
-                        m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
-                        m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
-                        GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerJumpSoundClip();
-                        bodyAnimator.SetBool("isJumping", true);
-                        legsAnimator.SetBool("isJumping", true);
-                        m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
-                        m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
-                        ResetAnticipation();
+                        OnLandEvent.Invoke();
+                        //bodyAnimator.SetBool("isJumping", false);
+                        if (isAnticipating)
+                        {
+                            m_Grounded = false;
+                            m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
+                            m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
+                            GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerJumpSoundClip();
+                            bodyAnimator.SetBool("isJumping", true);
+                            legsAnimator.SetBool("isJumping", true);
+                            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
+                            m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+                            ResetAnticipation();
+                        }
                     }
                 }
             }
         }
+        else
+        {
+            Move(0, false, false);
+        }
+
     }
     public void ResetAnticipation()
     {

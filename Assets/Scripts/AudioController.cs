@@ -6,6 +6,8 @@ public class AudioController : MonoBehaviour
 {
     public AudioSource playerJumpSource;
     public List<AudioClip> playerJumpSoundClips;
+    public AudioSource playerDashSource;
+    public List<AudioClip> playerDashSoundClips;
     public AudioSource playerDeathSource;
     public List<AudioClip> playerDeathSoundClips;
     public AudioSource playerDamageSource;
@@ -25,6 +27,17 @@ public class AudioController : MonoBehaviour
             playerJumpSource.clip = playerJumpSoundClips[index];
 
             playerJumpSource.Play();
+        }
+    }
+    public void PlayPlayerDashSoundClip()
+    {
+        if (playerDashSoundClips.Count > 0)
+        {
+            int index = Random.Range(0, playerDashSoundClips.Count);
+
+            playerDashSource.clip = playerDashSoundClips[index];
+
+            playerDashSource.Play();
         }
     }
     public void PlayPlayerDeathSoundClip()
