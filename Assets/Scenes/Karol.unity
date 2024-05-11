@@ -1595,6 +1595,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3331115778072942472, guid: bf3d0ae6a2fe58b4384b5194dd61bc49, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.34029
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331115778072942472, guid: bf3d0ae6a2fe58b4384b5194dd61bc49, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.193
+      objectReference: {fileID: 0}
     - target: {fileID: 4212966253919837680, guid: bf3d0ae6a2fe58b4384b5194dd61bc49, type: 3}
       propertyPath: m_Name
       value: Enemy (2)
@@ -2203,7 +2211,7 @@ Transform:
   m_GameObject: {fileID: 895309699}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.49999735, y: 8, z: -10}
+  m_LocalPosition: {x: 0.49998793, y: 8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
