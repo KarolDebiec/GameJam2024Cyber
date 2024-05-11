@@ -20,8 +20,8 @@ public class CharacterController2D : MonoBehaviour
     private bool m_FacingRight = true;
     private Vector3 m_Velocity = Vector3.zero;
 
-   
 
+    private bool firstTouch =false;
     
     public float horizontalMove = 0f;
 
@@ -155,11 +155,15 @@ public class CharacterController2D : MonoBehaviour
             Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
             for (int i = 0; i < colliders.Length; i++)
             {
+                if (!firstTouch) { 
+                 firstTouch =true;
+                }
+                else { if (colliders[i].CompareTag("water")) Instantiate(myPrefab, this.transform.position, Quaternion.identity); }
                 
 
                 if (colliders[i].gameObject != gameObject)
                 {
-                    Instantiate(myPrefab, this.transform.position, Quaternion.identity);
+                    
                     m_Grounded = true;
 
                     if (!wasGrounded)
