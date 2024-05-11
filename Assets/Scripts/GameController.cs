@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
+
+    public float score;
+    public TextMeshProUGUI scoreText;
     public TrailRenderer playerTrail;
     public float enemySpeedMultiplier = 1.0f;
     public float playerSpeedMultiplier = 1.0f;
@@ -22,11 +26,13 @@ public class GameController : MonoBehaviour
             playerSpeedMultiplier += speedGainFactor * Time.deltaTime;
             minPlayerSpeedMultiplier += (speedGainFactor * Time.deltaTime) / 2f;
             playerTrail.time = playerSpeedMultiplier;
+            score += playerSpeedMultiplier * Time.deltaTime;
         }
         else
         {
            //ded
         }
+        scoreText.text = score.ToString("F0");
     }
 
     public void SpeedUpPlayer(float value)

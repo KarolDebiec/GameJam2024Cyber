@@ -90,6 +90,10 @@ public class CharacterController2D : MonoBehaviour
                 isAnticipating = false;
             }
         }
+        if(transform.position.y < 2)
+        {
+            transform.position = new Vector3(transform.position.x, 2f, transform.position.z);
+        }
     }
     private void FixedUpdate()
     {
