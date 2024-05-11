@@ -52,6 +52,7 @@ public class RangeEnemy : MonoBehaviour
     {
         animator.SetTrigger("enemyAttack");
         Instantiate(myPrefab, this.transform.position, Quaternion.identity);
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayEnemyAttackSoundClip();
     }
     private void FixedUpdate()
     {
@@ -90,7 +91,7 @@ public class RangeEnemy : MonoBehaviour
     public void takeDamage()
     {
         gameController.calculateSpeeddown();
-
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayEnemyDeathSoundClip();
         Destroy(this.gameObject);
     }
 
