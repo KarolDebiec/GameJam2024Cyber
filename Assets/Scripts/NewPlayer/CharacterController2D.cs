@@ -125,6 +125,7 @@ public class CharacterController2D : MonoBehaviour
                         m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
                         GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerJumpSoundClip();
                         bodyAnimator.SetBool("isJumping", true);
+                        legsAnimator.SetBool("isJumping", true);
                         m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
                         m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
                         ResetAnticipation();
@@ -212,6 +213,7 @@ public class CharacterController2D : MonoBehaviour
         if(m_Grounded)
         {
             bodyAnimator.SetBool("isJumping", false);
+            legsAnimator.SetBool("isJumping", false);
         }
 
         if (m_Grounded && jump)
@@ -221,6 +223,7 @@ public class CharacterController2D : MonoBehaviour
             m_Grounded = false;
             GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerJumpSoundClip();
             bodyAnimator.SetBool("isJumping", true);
+            legsAnimator.SetBool("isJumping", true);
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
         }
 	}
