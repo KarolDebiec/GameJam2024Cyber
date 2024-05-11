@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    public float enemySpeedMultiplicator = 1.0f;
-    public float playerSpeedMultiplicator = 1.0f;
-    public float minPlayerSpeedMultiplicator = 1.0f;
+    public TrailRenderer playerTrail;
+    public float enemySpeedMultiplier = 1.0f;
+    public float playerSpeedMultiplier = 1.0f;
+    public float minPlayerSpeedMultiplier = 1.0f;
     public float speedGainFactor = 0.01f;
+    public float maxPlayerSpeedMultiplier = 2.8f;
     void Start()
     {
         
@@ -15,22 +17,30 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        playerSpeedMultiplicator += speedGainFactor * Time.deltaTime;
-        minPlayerSpeedMultiplicator += (speedGainFactor * Time.deltaTime)/2f;
+        if(playerSpeedMultiplier < maxPlayerSpeedMultiplier)
+        {
+            playerSpeedMultiplier += speedGainFactor * Time.deltaTime;
+            minPlayerSpeedMultiplier += (speedGainFactor * Time.deltaTime) / 2f;
+            playerTrail.time = playerSpeedMultiplier;
+        }
+        else
+        {
+            //dead
+        }
     }
 
     public void SpeedUpPlayer(float value)
     {
-        playerSpeedMultiplicator += value;
-        minPlayerSpeedMultiplicator += value / 2f;
+        playerSpeedMultiplier += value;
+        minPlayerSpeedMultiplier += value / 2f;
     }
 
     public void SlowDownPlayer(float value)
     {
-        if(playerSpeedMultiplicator - value >= minPlayerSpeedMultiplicator)
+        if(playerSpeedMultiplier - value >= minPlayerSpeedMultiplier)
         {
-            playerSpeedMultiplicator -= value;
-            minPlayerSpeedMultiplicator -= value / 2f;
+            playerSpeedMultiplier -= value;
+            minPlayerSpeedMultiplier -= value / 2f;
         }
     }
 }

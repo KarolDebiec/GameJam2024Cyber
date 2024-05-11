@@ -70,12 +70,12 @@ public class CharacterController2D : MonoBehaviour
                 jumpAnticipationTime = 0;
                 isAnticipating = true;
             }
-            Move(gameController.playerSpeedMultiplicator * horizontalMove * Time.fixedDeltaTime, false, true);
+            Move(gameController.playerSpeedMultiplier * horizontalMove * Time.fixedDeltaTime, false, true);
         }
         if(!canJump)
         {
             jumpWaitTime += Time.deltaTime;
-            if(jumpWaitTime >= jumpWaitFactor/ gameController.playerSpeedMultiplicator)
+            if(jumpWaitTime >= jumpWaitFactor/ gameController.playerSpeedMultiplier)
             {
                 canJump = true;
                 jumpWaitTime = 0;
@@ -93,7 +93,7 @@ public class CharacterController2D : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Move(gameController.playerSpeedMultiplicator * horizontalMove * Time.fixedDeltaTime, false, false);
+        Move(gameController.playerSpeedMultiplier * horizontalMove * Time.fixedDeltaTime, false, false);
         bool wasGrounded = m_Grounded;
         m_Grounded = false;
 
@@ -110,8 +110,8 @@ public class CharacterController2D : MonoBehaviour
                     {
                         Debug.Log("on grounded : " + m_JumpForce);
                         m_Grounded = false;
-                        m_JumpForce = jumpForce * gameController.playerSpeedMultiplicator;
-                        m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplicator * gameController.playerSpeedMultiplicator;
+                        m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
+                        m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
                         m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
                         m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
                         ResetAnticipation();
@@ -197,8 +197,8 @@ public class CharacterController2D : MonoBehaviour
 
         if (m_Grounded && jump)
         {
-            m_JumpForce = jumpForce * gameController.playerSpeedMultiplicator;
-            m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplicator * gameController.playerSpeedMultiplicator;
+            m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
+            m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
             m_Grounded = false;
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
         }
