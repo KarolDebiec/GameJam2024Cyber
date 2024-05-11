@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
 {
     public float score;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI finalScoreText;
     public Slider speedSlider;
     public TrailRenderer playerTrail;
     public float enemySpeedMultiplier = 1.0f;
@@ -14,15 +15,14 @@ public class GameController : MonoBehaviour
     public float minPlayerSpeedMultiplier = 1.0f;
     public float speedGainFactor = 0.01f;
     public float maxPlayerSpeedMultiplier = 2.8f;
-    void Start()
-    {
-        
-    }
-
+    public Cinemachine.CinemachineVirtualCamera cinemachineVirtualCamera;
+    public Cinemachine.CinemachineConfiner2D cinemachineConfiner;
+    private bool isPlayerDead;
     void Update()
     {
         if(playerSpeedMultiplier < maxPlayerSpeedMultiplier)
         {
+            enemySpeedMultiplier += speedGainFactor * Time.deltaTime;
             playerSpeedMultiplier += speedGainFactor * Time.deltaTime;
             minPlayerSpeedMultiplier += (speedGainFactor * Time.deltaTime) / 2f;
             playerTrail.time = playerSpeedMultiplier;
@@ -30,9 +30,16 @@ public class GameController : MonoBehaviour
         }
         else
         {
-           //ded
+            PlayerDeath();
         }
-        scoreText.text = score.ToString("F0");
+        if(scoreText.gameObject.activeSelf)
+        {
+            scoreText.text = score.ToString("F0");
+        }
+        if(isPlayerDead)
+        {
+            cinemachineVirtualCamera.m_Lens.OrthographicSize = 2f;
+        }
     }
 
     public void SpeedUpPlayer(float value)
@@ -65,7 +72,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            //ded
+            PlayerDeath();
         }
     }
     public void calculateSpeeddown()
@@ -73,5 +80,17 @@ public class GameController : MonoBehaviour
         score += 100;
         float randomNumber = Random.Range(0.05f, 0.10f);
         playerSpeedMultiplier = playerSpeedMultiplier - playerSpeedMultiplier * randomNumber;
+    }
+
+    public void PlayerDeath()
+    {
+        Debug.Log("player is dead");
+        cinemachineConfiner.enabled = false;
+        isPlayerDead = true;
+        finalScoreText.text = score.ToString("F0");
+        scoreText.gameObject.SetActive(false);
+        speedSlider.gameObject.SetActive(false);
+        finalScoreText.gameObject.SetActive(true);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController2D>().isPlayerDead = true;
     }
 }
