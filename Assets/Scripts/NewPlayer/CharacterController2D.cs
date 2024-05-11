@@ -9,6 +9,8 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private LayerMask m_WhatIsGround;
     [SerializeField] private Transform m_GroundCheck;
     [SerializeField] private Transform m_CeilingCheck;
+    [SerializeField] private Animator bodyAnimator;
+    [SerializeField] private Animator legsAnimator;
 
     private GameController gameController;
     const float k_GroundedRadius = .2f;
@@ -45,6 +47,8 @@ public class CharacterController2D : MonoBehaviour
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
+
+        //bodyAnimator.
 
         if (OnLandEvent == null)
             OnLandEvent = new UnityEvent();

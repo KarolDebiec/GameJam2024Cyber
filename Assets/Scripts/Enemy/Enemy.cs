@@ -37,7 +37,6 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         speed = 6.0f;
-        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
     // Update is called once per frame
     private void FixedUpdate()
