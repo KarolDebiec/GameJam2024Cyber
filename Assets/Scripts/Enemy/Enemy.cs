@@ -43,6 +43,8 @@ public class Enemy : MonoBehaviour
     public float yVelocity = 0.0f;
     public float yAcceleration = -10f;
     public float multipleGravity = 2.0f;
+
+    public bool isRotated = false;
     private void Start()
     {
         speed = 6.0f;
@@ -91,6 +93,7 @@ public class Enemy : MonoBehaviour
     private void movement()
     {
         this.targetPos = this.player.position - this.transform.position;
+        calculatexSphereTranslate();
         this.targetPos.y = 0;
         this.targetPos.z = 0;
         this.targetPos.Normalize();
@@ -239,8 +242,26 @@ public class Enemy : MonoBehaviour
 
         void calculatexSphereTranslate()
         {
-            if (targetPos.x > 0) { translateSphereOnGround = new Vector3(xSphereTranslate, -0.70f, 0f); translateAttackCircle = new Vector2(1, 0); }
-            else { translateSphereOnGround = new Vector3(-xSphereTranslate, -0.70f, 0f); translateAttackCircle = new Vector2(-1, 0); }
+            if (targetPos.x > 0) {
+
+            translateSphereOnGround = new Vector3(xSphereTranslate, -0.70f, 0f); translateAttackCircle = new Vector2(1, 0);
+
+
+            if (!isRotated)
+            {
+                this.transform.Rotate(0.0f, 180.0f, 0.0f, Space.Self);
+                isRotated = true;
+            }
+        }
+            else {
+            translateSphereOnGround = new Vector3(-xSphereTranslate, -0.70f, 0f); translateAttackCircle = new Vector2(-1, 0);
+            
+            if (isRotated)
+            {
+                this.transform.Rotate(0.0f, 180.0f, 0.0f, Space.Self);
+                isRotated = false;
+            }
+        }
         }
 
 
