@@ -571,7 +571,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 746da315a6e81c54b9fac5ba8ee17a4b, type: 3}
     - target: {fileID: 4472251570734861653, guid: 1611d2e1425d8f447bf49c8678259d7e, type: 3}
       propertyPath: m_SortingOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6621406722905387783, guid: 1611d2e1425d8f447bf49c8678259d7e, type: 3}
       propertyPath: m_Name
@@ -4764,7 +4764,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 5187fcf5a8907454da0456b23922e618, type: 3}
     - target: {fileID: 5720449876877116208, guid: 3ca0c4b675a2b6045b758b6edb67c5dd, type: 3}
       propertyPath: m_SortingOrder
-      value: -2
+      value: -3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5461,6 +5461,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7641150548822964918, guid: 8ec62f8bf118118489dabdaa70c36b78, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5665,6 +5669,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: b8e47c9744d525e4fb49d66941d22aa1, type: 3}
+    - target: {fileID: 427954092250616744, guid: 7fc6cfb2bff970f42a4c7a5e8aee5047, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 3676290887863066468, guid: 7fc6cfb2bff970f42a4c7a5e8aee5047, type: 3}
       propertyPath: m_LocalPosition.x
       value: 36.29
