@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
+    public AudioSource playerJumpSource;
+    public List<AudioClip> playerJumpSoundClips;
     public AudioSource playerDeathSource;
     public List<AudioClip> playerDeathSoundClips;
     public AudioSource playerDamageSource;
@@ -14,7 +16,17 @@ public class AudioController : MonoBehaviour
     public List<AudioClip> enemyDeathSoundClips;
     public AudioSource enemyAttackSource;
     public List<AudioClip> enemyAttackSoundClips;
+    public void PlayPlayerJumpSoundClip()
+    {
+        if (playerJumpSoundClips.Count > 0)
+        {
+            int index = Random.Range(0, playerJumpSoundClips.Count);
 
+            playerJumpSource.clip = playerJumpSoundClips[index];
+
+            playerJumpSource.Play();
+        }
+    }
     public void PlayPlayerDeathSoundClip()
     {
         if (playerDeathSoundClips.Count > 0)

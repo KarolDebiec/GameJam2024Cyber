@@ -120,6 +120,7 @@ public class CharacterController2D : MonoBehaviour
                         m_Grounded = false;
                         m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
                         m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
+                        GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerJumpSoundClip();
                         m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0);
                         m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
                         ResetAnticipation();
@@ -210,6 +211,7 @@ public class CharacterController2D : MonoBehaviour
             m_JumpForce = jumpForce * gameController.playerSpeedMultiplier;
             m_Rigidbody2D.gravityScale = defaulGravityForce * gameController.playerSpeedMultiplier * gameController.playerSpeedMultiplier;
             m_Grounded = false;
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayPlayerJumpSoundClip();
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
         }
 	}
