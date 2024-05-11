@@ -6,28 +6,37 @@ public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] private Animator bodyAnimator;
     [SerializeField] private Animator legsAnimator;
+    //[SerializeField] private float timeBetweenAttacks = 0f;
     public Transform attackPoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayer;
     public CharacterController2D characterController;
+    private bool isAttacking;
+
+    
+
+    private void Start()
+    {
+        isAttacking = false;
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Attack();
+            if (!isAttacking)
+                Attack();
         }
         
     }
 
-    void Attack()
+    private void Attack()
     {
-        bodyAnimator.SetBool("isAttacking", true);
-        if (characterController.horizontalMove == 0f)
-        {
-            legsAnimator.SetBool("isAttacking", true);
-        }
+        isAttacking = true;
+        bodyAnimator.SetTrigger("attack");
+        //yield return new WaitForSeconds(timeBetweenAttacks);
+        isAttacking = false;
     }
 
     private void OnDrawGizmosSelected()
@@ -36,8 +45,4 @@ public class PlayerCombat : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
-    void StopAttacking()
-    {
-        bodyAnimator.SetBool("isAttacking", false);
-    }
 }

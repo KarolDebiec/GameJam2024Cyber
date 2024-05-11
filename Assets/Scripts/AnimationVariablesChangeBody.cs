@@ -9,13 +9,6 @@ public class AnimationVariablesChangeBody : MonoBehaviour
     [SerializeField] private Animator legsAnimator;
     [SerializeField] private PlayerCombat playerCombat;
 
-    public void StopAttackingBody()
-    {
-        bodyAnimator.SetBool("isAttacking", false);
-        legsAnimator.SetBool("isAttacking", false);
-
-    }
-
     
 
     public void Attack()
