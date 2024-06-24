@@ -147,6 +147,7 @@ MonoBehaviour:
   yAcceleration: -9.81
   canMove: 0
   distanceToPlayer: 0
+  onDeathObject: {fileID: 6600609377242393568, guid: e0903e320edcb6740a57822cc67d987a, type: 3}
 --- !u!70 &-4090429419384173078
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

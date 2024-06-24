@@ -45,6 +45,8 @@ public class Enemy : MonoBehaviour
     public float multipleGravity = 2.0f;
 
     public bool isRotated = false;
+
+    public GameObject onDeathObject;
     private void Start()
     {
         speed = 6.0f;
@@ -88,6 +90,7 @@ public class Enemy : MonoBehaviour
     {
         gameController.calculateSpeeddown();
         GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayEnemyDeathSoundClip();
+        Instantiate(onDeathObject,gameObject.transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 

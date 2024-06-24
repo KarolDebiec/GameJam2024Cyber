@@ -39,6 +39,7 @@ public class RangeEnemy : MonoBehaviour
     public bool canMove;
     public float distanceToPlayer;
 
+    public GameObject onDeathObject;
     private void Start()
     {
         speed = 6.0f;
@@ -92,6 +93,7 @@ public class RangeEnemy : MonoBehaviour
     {
         gameController.calculateSpeeddown();
         GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayEnemyDeathSoundClip();
+        Instantiate(onDeathObject, gameObject.transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 

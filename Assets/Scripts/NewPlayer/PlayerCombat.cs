@@ -12,14 +12,14 @@ public class PlayerCombat : MonoBehaviour
     public LayerMask enemyLayer;
     public CharacterController2D characterController;
     private bool isAttacking;
-    private bool shouldAttack;
+    //private bool shouldAttack;
 
     
 
     private void Start()
     {
         isAttacking = false;
-        shouldAttack = false;
+        //shouldAttack = false;
     }
 
     // Update is called once per frame

@@ -20,20 +20,47 @@ public class GameController : MonoBehaviour
     public Cinemachine.CinemachineVirtualCamera cinemachineVirtualCamera;
     public Cinemachine.CinemachineConfiner2D cinemachineConfiner;
     private bool isPlayerDead;
+
+    public GameObject damagePlayerIndicator;
+
+    public MenuController menuController;
+    public Leaderboard leaderboard;
+    public TMP_InputField inputField;
+    //public InputField inputField;
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
+#if UNITY_EDITOR
+            //UnityEditor.EditorApplication.isPlaying = false;
+            if(Time.timeScale == 1.0f)
+            {
+                Time.timeScale = 0f;
+                menuController.ShowMenu();
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                menuController.HideMenu();
+            }
+#else
+            //Application.Quit();
+            if(Time.timeScale == 1.0f)
+            {
+                Time.timeScale = 0f;
+                menuController.ShowMenu();
+            }
+            else
+            {
+                Time.timeScale = 1.0f;
+                menuController.HideMenu();
+            }
+#endif
         }
-        if (Input.GetKeyDown(KeyCode.O))
+        /*if (Input.GetKeyDown(KeyCode.O))
         {
             SceneManager.LoadScene(0);
-        }
+        }*/
         if (playerSpeedMultiplier < maxPlayerSpeedMultiplier)
         {
             enemySpeedMultiplier += speedGainFactor * Time.deltaTime;
@@ -80,6 +107,7 @@ public class GameController : MonoBehaviour
         {
             StartCoroutine(camShake());
             GetComponent<AudioController>().PlayPlayerDamageSoundClip();
+            Instantiate(damagePlayerIndicator, GameObject.FindGameObjectWithTag("Player").transform.position, Quaternion.identity) ;
             playerSpeedMultiplier = playerSpeedMultiplier + playerSpeedMultiplier * randomNumber;
             minPlayerSpeedMultiplier +=  (playerSpeedMultiplier * randomNumber)/4f; 
             if(score >= 10)
@@ -124,5 +152,11 @@ public class GameController : MonoBehaviour
         cinemachineVirtualCamera.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 2f;
         yield return new WaitForSeconds(0.4f);
         cinemachineVirtualCamera.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
+    }
+
+    public void EndGame()//is called after player click the submit button after the run
+    {
+        leaderboard.AddHighScore((int)score, inputField.text);
+        SceneManager.LoadScene(0);
     }
 }
