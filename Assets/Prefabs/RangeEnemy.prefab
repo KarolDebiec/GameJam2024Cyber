@@ -129,7 +129,12 @@ MonoBehaviour:
   translateSphereOnHight: {x: 0, y: 2, z: 0}
   translateSphereOnGround: {x: -1, y: -1, z: 0}
   translateAttackCircle: {x: 0, y: 0}
+  firstBody: {fileID: 7493271399375598168, guid: c315ca603a7a24749be588fbf0b51aa3, type: 3}
+  secBody: {fileID: 7493271399375598168, guid: add15a6341ddd794b8e41063e67ba952, type: 3}
+  lastBody: {fileID: 7493271399375598168, guid: 880fb9c62204dd546af4a8e775009f8a, type: 3}
+  blood: {fileID: 7192305438611077969, guid: 5c28ae00e84dac245890bd325989e6b5, type: 3}
   speed: 0
+  Maxspeed: 6
   attackRange: 0
   attackSpeed: 0
   attackTimer: 0

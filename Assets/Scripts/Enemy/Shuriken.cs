@@ -11,6 +11,7 @@ public class Shuriken : MonoBehaviour
     Vector2 direction = Vector2.zero;
     GameObject player;
     public float speed = 7.0f;
+    public float Maxspeed = 7.0f;
     float liveTime = 4.0f;
     // Start is called before the first frame update
     void Start()
@@ -28,7 +29,7 @@ public class Shuriken : MonoBehaviour
     {
         Quaternion currentRotation = transform.rotation;
 
-        // Oblicz now¹ rotacjê, dodaj¹c do obecnej rotacji odpowiedni¹ zmianê
+        // Oblicz nowï¿½ rotacjï¿½, dodajï¿½c do obecnej rotacji odpowiedniï¿½ zmianï¿½
         Quaternion newRotation = Quaternion.Euler(
             currentRotation.eulerAngles.x,
             currentRotation.eulerAngles.y,
@@ -57,8 +58,16 @@ public class Shuriken : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    public void slowMe(bool isSlow)
     {
-        
+        if (isSlow) {speed = Maxspeed / 5.0f;
+            
+        }
+        else
+        {
+            speed = Maxspeed;
+            
+        }
+            
     }
 }

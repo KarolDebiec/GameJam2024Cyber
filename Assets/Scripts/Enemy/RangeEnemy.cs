@@ -15,9 +15,16 @@ public class RangeEnemy : MonoBehaviour
     public Vector3 translateSphereOnHight = new Vector3(0, 2, 0);
     public Vector3 translateSphereOnGround = new Vector3(-1, -1, 0);
     public Vector2 translateAttackCircle = new Vector2(0, 0);
+    [SerializeField] GameObject firstBody;
+    [SerializeField] GameObject secBody;
+    [SerializeField] GameObject lastBody;
+    [SerializeField] GameObject blood;
     //float ySphereTranslate = 1;
     float xSphereTranslate = 1;
+    private float MaxsAttackpeed=1.0f;
+    private float AttackpeedMultiply=1.0f;
     public float speed;
+    public float Maxspeed = 6.0f;
     public float attackRange;
     public float attackSpeed;
     public float attackTimer;
@@ -42,6 +49,7 @@ public class RangeEnemy : MonoBehaviour
     public GameObject onDeathObject;
     private void Start()
     {
+        
         speed = 6.0f;
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         this.distanceToPlayer = 15.0f;
@@ -52,11 +60,14 @@ public class RangeEnemy : MonoBehaviour
     public void Throw()
     {
         animator.SetTrigger("enemyAttack");
-        Instantiate(myPrefab, this.transform.position, Quaternion.identity);
+        
+        GameObject newObject=Instantiate(myPrefab, this.transform.position, Quaternion.identity);
+       
         GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayEnemyAttackSoundClip();
     }
     private void FixedUpdate()
     {
+        animator.speed = speed/Maxspeed;
         Vector3 helper = player.transform.position - this.transform.position;
         if (helper.magnitude >= distanceToPlayer)
         {
@@ -65,6 +76,9 @@ public class RangeEnemy : MonoBehaviour
         else
         {
             this.reverseMovement();
+        }
+        if (transform.position.y < 2.0f){Vector3 newPosition = new Vector3(transform.position.x, 2.0f, transform.position.z);
+            transform.position = newPosition;
         }
         attackTime -= Time.deltaTime;
 
@@ -84,7 +98,7 @@ public class RangeEnemy : MonoBehaviour
             }
         }
 
-
+       
 
     }
 
@@ -94,6 +108,11 @@ public class RangeEnemy : MonoBehaviour
         gameController.calculateSpeeddown();
         GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayEnemyDeathSoundClip();
         Instantiate(onDeathObject, gameObject.transform.position, Quaternion.identity);
+        int value = Random.Range(1, 4);
+        if(1 == value) Instantiate(firstBody, this.transform.position, Quaternion.identity);
+        else if(2 == value) Instantiate(secBody, this.transform.position, Quaternion.identity);
+        else if(3 == value)Instantiate(lastBody, this.transform.position, Quaternion.identity);
+        Instantiate(blood, this.transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 
@@ -110,7 +129,7 @@ public class RangeEnemy : MonoBehaviour
 
             if (Mathf.Abs(this.transform.position.y - player.transform.position.y) < 0.3f)
             {
-                ///Ustawiæ dobr¹ pozycje dla OverlapSphere
+                ///Ustawiï¿½ dobrï¿½ pozycje dla OverlapSphere
                 Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnGround.x, this.transform.position.y + this.translateSphereOnGround.y), 0.3f, groundLayerMask);
                 if (hitColliders.Length > 0)
                 {
@@ -124,7 +143,7 @@ public class RangeEnemy : MonoBehaviour
 
                     this.transform.position += (this.targetPos * Time.deltaTime) * speed;
                 }
-                else /// logika do niespadania kiedy przerwa miêdzy platformiami
+                else /// logika do niespadania kiedy przerwa miï¿½dzy platformiami
                 {
                     //logika skoku
                     isJumping = true;
@@ -151,7 +170,7 @@ public class RangeEnemy : MonoBehaviour
                     Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y + (-1)), 0.3f, groundLayerMask);
                     if (hitColliders.Length > 0)
                     {
-                        //skok w przepaœæ
+                        //skok w przepaï¿½ï¿½
                         this.targetPos.y = 0;
                         this.targetPos.Normalize();
                         this.transform.position += this.targetPos * Time.deltaTime * speed;
@@ -206,7 +225,7 @@ public class RangeEnemy : MonoBehaviour
         }
         // idzie x do gracza
         /// jesli mniejszy
-        // sprawdzic czy platforma jest nad g³ow¹
+        // sprawdzic czy platforma jest nad gï¿½owï¿½
         //jesli nie dojsc do bezpiecznego
         //
         //jesli tak odejsc do punktu skoku
@@ -249,7 +268,7 @@ public class RangeEnemy : MonoBehaviour
             calculateReverseXSphereTranslate();
 
 
-            ///Ustawiæ dobr¹ pozycje dla OverlapSphere
+            ///Ustawiï¿½ dobrï¿½ pozycje dla OverlapSphere
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnGround.x, this.transform.position.y + this.translateSphereOnGround.y), 0.3f, groundLayerMask);
             if (hitColliders.Length > 0)
             {
@@ -270,10 +289,20 @@ public class RangeEnemy : MonoBehaviour
     } 
         // idzie x do gracza
         /// jesli mniejszy
-        // sprawdzic czy platforma jest nad g³ow¹
+        // sprawdzic czy platforma jest nad gï¿½owï¿½
         //jesli nie dojsc do bezpiecznego
         //
         //jesli tak odejsc do punktu skoku
-
+        public void slowMe(bool isSlow)
+        {
+            if (isSlow) {speed = Maxspeed / 5.0f;
+                AttackpeedMultiply = MaxsAttackpeed * 5.0f;
+            }
+            else
+            {
+                speed = Maxspeed;
+                AttackpeedMultiply = MaxsAttackpeed;
+            }
+        }
 
 }

@@ -989,6 +989,9 @@ MonoBehaviour:
   menuController: {fileID: 227818467}
   leaderboard: {fileID: 326378209}
   inputField: {fileID: 571921209}
+  isSlowTime: 0
+  slowtimer: 0
+  SlowTimerMax: 10
 --- !u!4 &326378198
 Transform:
   m_ObjectHideFlags: 0
@@ -5081,7 +5084,7 @@ Transform:
   m_GameObject: {fileID: 895309699}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5053724, y: 8.123509, z: -10}
+  m_LocalPosition: {x: 0.5063554, y: 8.123509, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9378,6 +9381,18 @@ PrefabInstance:
       propertyPath: runSpeed
       value: 80
       objectReference: {fileID: 0}
+    - target: {fileID: 5563087104418742937, guid: 0aefe885a1814054b9d72bdc27094f49, type: 3}
+      propertyPath: slowTime
+      value: 
+      objectReference: {fileID: 2067965368964745904, guid: 7769151b0a32ed5478eabb023e493560, type: 3}
+    - target: {fileID: 5563087104418742937, guid: 0aefe885a1814054b9d72bdc27094f49, type: 3}
+      propertyPath: canUseSlow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563087104418742937, guid: 0aefe885a1814054b9d72bdc27094f49, type: 3}
+      propertyPath: playerSmuga
+      value: 
+      objectReference: {fileID: 8422227028227514469, guid: b1118aaf6acde0847b2a5197cd6a6c0b, type: 3}
     - target: {fileID: 5563087104418742937, guid: 0aefe885a1814054b9d72bdc27094f49, type: 3}
       propertyPath: dashWaitFactor
       value: 1

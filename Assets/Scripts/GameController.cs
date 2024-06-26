@@ -26,9 +26,35 @@ public class GameController : MonoBehaviour
     public MenuController menuController;
     public Leaderboard leaderboard;
     public TMP_InputField inputField;
+
+    public bool isSlowTime = false;
+    public float slowtimer = 0.0f;
+    public float SlowTimerMax = 10;
+    
+    
     //public InputField inputField;
     void Update()
     {
+        if (slowtimer < 0.0f) isSlowTime = false;
+        if (isSlowTime) slowtimer -= Time.deltaTime;
+        Enemy[] enemyInstances = FindObjectsOfType<Enemy>();
+        foreach (Enemy enemy in enemyInstances)
+        {
+            enemy.slowMe(isSlowTime);
+        }
+        RangeEnemy[] rangeenemyInstances = FindObjectsOfType<RangeEnemy>();
+        foreach (RangeEnemy enemy in rangeenemyInstances)
+        {
+            enemy.slowMe(isSlowTime);
+        }
+        
+        Shuriken[] shurikensInstances = FindObjectsOfType<Shuriken>();
+        foreach (Shuriken shurikens in shurikensInstances)
+        {
+            shurikens.slowMe(isSlowTime);
+        }
+
+        
         if(Input.GetKeyDown(KeyCode.Escape))
         {
 #if UNITY_EDITOR
@@ -158,5 +184,11 @@ public class GameController : MonoBehaviour
     {
         leaderboard.AddHighScore((int)score, inputField.text);
         SceneManager.LoadScene(0);
+    }
+
+    public void setSlow()
+    {
+        isSlowTime = true;
+        slowtimer = SlowTimerMax;
     }
 }

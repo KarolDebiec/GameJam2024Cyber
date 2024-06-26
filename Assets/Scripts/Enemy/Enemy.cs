@@ -5,6 +5,9 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
+
+
 //using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Enemy : MonoBehaviour
@@ -13,6 +16,11 @@ public class Enemy : MonoBehaviour
     private GameController gameController;
     [SerializeField] LayerMask groundLayerMask;
     [SerializeField] LayerMask palyerLayerMask;
+    [SerializeField] GameObject firstBody;
+    [SerializeField] GameObject secBody;
+    [SerializeField] GameObject lastBody;
+    [SerializeField] GameObject blood;
+
    Transform player;
     [SerializeField] Animator animator;
     public float attackTime;
@@ -23,6 +31,11 @@ public class Enemy : MonoBehaviour
     //float ySphereTranslate = 1;
     float xSphereTranslate = 1;
     public float speed;
+    private float Maxspeed=6.0f;
+    private float MaxsJumppeedMulityply=1.0f;
+    private float JumppeedMultiply=1.0f;
+    private float MaxsAttackpeed=1.0f;
+    private float AttackpeedMultiply=1.0f;
     public float attackRange;
     public float attackSpeed;
     public float attackTimer;
@@ -61,7 +74,11 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
+        animator.speed = speed/Maxspeed;
         this.movement();
+        if (transform.position.y < 2.0f){Vector3 newPosition = new Vector3(transform.position.x, 2.0f, transform.position.z);
+            transform.position = newPosition;
+        }
         if (isAttacked)
         {
             attackTime -= Time.deltaTime;
@@ -75,7 +92,7 @@ public class Enemy : MonoBehaviour
                     gameController.calculateSpeedup();
                     GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayEnemyAttackSoundClip();
                 }
-                attackTime = attackSpeed;
+                attackTime = attackSpeed*AttackpeedMultiply;
                 isAttacked = false;
                 // if (intersect)  //collider do ataku
                 {
@@ -91,6 +108,11 @@ public class Enemy : MonoBehaviour
         gameController.calculateSpeeddown();
         GameObject.FindGameObjectWithTag("GameController").GetComponent<AudioController>().PlayEnemyDeathSoundClip();
         Instantiate(onDeathObject,gameObject.transform.position, Quaternion.identity);
+        int value = Random.Range(1, 4);
+        if(1 == value) Instantiate(firstBody, this.transform.position, Quaternion.identity);
+        else if(2 == value) Instantiate(secBody, this.transform.position, Quaternion.identity);
+        else if(3 == value)Instantiate(lastBody, this.transform.position, Quaternion.identity);
+        Instantiate(blood, this.transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 
@@ -116,7 +138,7 @@ public class Enemy : MonoBehaviour
 
             if (Mathf.Abs(this.transform.position.y - player.position.y) < 0.3f)
             {
-                ///Ustawiæ dobr¹ pozycje dla OverlapSphere
+                ///Ustawiï¿½ dobrï¿½ pozycje dla OverlapSphere
                 Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x + this.translateSphereOnGround.x, this.transform.position.y + this.translateSphereOnGround.y), 0.3f, groundLayerMask);
                 if (hitColliders.Length > 0)
                 {
@@ -130,7 +152,7 @@ public class Enemy : MonoBehaviour
 
                     this.transform.position += (this.targetPos * Time.deltaTime) * speed;
                 }
-                else /// logika do niespadania kiedy przerwa miêdzy platformiami
+                else /// logika do niespadania kiedy przerwa miï¿½dzy platformiami
                 {
                     //logika skoku
                     isJumping = true;
@@ -200,10 +222,10 @@ public class Enemy : MonoBehaviour
         {
 
 
-            float posy = yVelocity * Time.deltaTime + yAcceleration * Time.deltaTime * Time.deltaTime / 2;
+            float posy = (yVelocity * Time.deltaTime + yAcceleration * Time.deltaTime * Time.deltaTime / 2)*JumppeedMultiply;
             float posx = this.targetPos.x * Time.deltaTime * speed;
             transform.position += new Vector3(posx, posy, 0);
-            yVelocity = yVelocity + yAcceleration * multipleGravity * Time.deltaTime;
+            yVelocity = (yVelocity + yAcceleration * multipleGravity * Time.deltaTime);
             isNotEnoughtHeight = false;
             isTooHigh = false;
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(this.transform.position.x, this.transform.position.y + (-0.80f)), 0.1f, groundLayerMask);
@@ -220,7 +242,7 @@ public class Enemy : MonoBehaviour
         }
         // idzie x do gracza
         /// jesli mniejszy
-        // sprawdzic czy platforma jest nad g³ow¹
+        // sprawdzic czy platforma jest nad gï¿½owï¿½
         //jesli nie dojsc do bezpiecznego
         //
         //jesli tak odejsc do punktu skoku
@@ -269,5 +291,18 @@ public class Enemy : MonoBehaviour
         }
         }
 
-
+        public void slowMe(bool isSlow)
+        {
+            if (isSlow) {speed = Maxspeed / 5.0f;
+                JumppeedMultiply = MaxsJumppeedMulityply / 5.0f;
+                AttackpeedMultiply = MaxsAttackpeed * 5.0f;
+            }
+            else
+            {
+                speed = Maxspeed;
+                JumppeedMultiply = MaxsJumppeedMulityply;
+                AttackpeedMultiply = MaxsAttackpeed;
+            }
+            
+        }
 }

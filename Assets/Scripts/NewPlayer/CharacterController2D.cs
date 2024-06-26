@@ -12,6 +12,8 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Animator bodyAnimator;
     [SerializeField] private Animator legsAnimator;
     [SerializeField] public GameObject myPrefab;
+    [SerializeField] public GameObject playerSmuga;
+    [SerializeField] public GameObject slowTime;
     private GameController gameController;
     const float k_GroundedRadius = .2f;
     public bool m_Grounded;
@@ -20,9 +22,10 @@ public class CharacterController2D : MonoBehaviour
     private bool m_FacingRight = true;
     private Vector3 m_Velocity = Vector3.zero;
 
-
+    private float durationtoSpawn = 35.0f;
+    private float spawner = 5.0f;
     private bool firstTouch =false;
-    
+    private float velocityX = 0;
     public float horizontalMove = 0f;
 
     public float jumpAnticipationFactor = 0.05f;
@@ -39,12 +42,14 @@ public class CharacterController2D : MonoBehaviour
 
     public bool isPlayerDead = false;
 
+    public bool canUseSlow =false;
 
     private float jumpForce;
+    [SerializeField]private float smugaSpawnerTimer=2.0f;
     private float defaulGravityForce;
 
     public float runSpeed = 40f;
-    [SerializeField] private float m_MaxSpeed = 10f; // Maksymalna prêdkoœæ biegu
+    [SerializeField] private float m_MaxSpeed = 10f; // Maksymalna prï¿½dkoï¿½ï¿½ biegu
     [SerializeField] private float m_Acceleration = 20f; // Przyspieszenie postaci
 
     [Header("Events")]
@@ -72,7 +77,24 @@ public class CharacterController2D : MonoBehaviour
     {
         if (!isPlayerDead)
         {
+            spawnSlowTimer();
+            if (Input.GetButtonDown("SlowTime") && canUseSlow)
+            {
+                gameController.setSlow();
+                canUseSlow = false;
+            }
+
+            smugaSpawnerTimer -= Time.deltaTime;
+            if(gameController.isSlowTime && smugaSpawnerTimer<0.0f)
+            {
+                if(velocityX>0.0f) {smugaSpawnerTimer = 0.1f;Instantiate(playerSmuga, this.transform.position, Quaternion.identity);}
+                
+                else if(velocityX<0.0f) {smugaSpawnerTimer = 0.1f;Instantiate(playerSmuga, this.transform.position, Quaternion.Euler(0f, 180f, 0f));}
+                
+            }
+            
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+            velocityX = horizontalMove;
             if (horizontalMove == 0)
             {
                 bodyAnimator.SetBool("isRunning", false);
@@ -247,7 +269,7 @@ public class CharacterController2D : MonoBehaviour
             // Przyspieszenie i wyhamowanie postaci
             float targetSpeed = move * m_MaxSpeed;
             float speedDif = targetSpeed - m_Rigidbody2D.velocity.x;
-            // Zmodyfikuj wartoœæ przyspieszenia w zale¿noœci od kierunku zmiany prêdkoœci
+            // Zmodyfikuj wartoï¿½ï¿½ przyspieszenia w zaleï¿½noï¿½ci od kierunku zmiany prï¿½dkoï¿½ci
             float accelRate;
             if (Mathf.Abs(targetSpeed) > 0.01f)
             {
@@ -256,8 +278,8 @@ public class CharacterController2D : MonoBehaviour
             }
             else
             {
-                // Zwalnianie - u¿yj wiêkszej wartoœci dla szybszego zatrzymywania
-                accelRate = m_Acceleration * 2f; // Mo¿na dostosowaæ, aby zwalnianie by³o szybsze
+                // Zwalnianie - uï¿½yj wiï¿½kszej wartoï¿½ci dla szybszego zatrzymywania
+                accelRate = m_Acceleration * 2f; // Moï¿½na dostosowaï¿½, aby zwalnianie byï¿½o szybsze
             }
 
             Vector3 targetVelocity = new Vector2(m_Rigidbody2D.velocity.x + speedDif * accelRate * Time.fixedDeltaTime, m_Rigidbody2D.velocity.y);
@@ -296,5 +318,22 @@ public class CharacterController2D : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    private void spawnSlowTimer()
+    {
+        spawner -= Time.deltaTime;
+        if (spawner < 0.0f && canUseSlow==false)
+        {
+            float x = Random.Range(-60.0f, 60.0f);
+            float y = Random.Range(3.0f, 13.0f);
+            spawner = durationtoSpawn;
+            Instantiate(slowTime, new Vector3(x,y,0), Quaternion.identity);
+        }
+    }
+
+    public void pickUpSlow()
+    {
+        canUseSlow = true;
     }
 }

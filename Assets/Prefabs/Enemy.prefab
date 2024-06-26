@@ -158,6 +158,10 @@ MonoBehaviour:
   palyerLayerMask:
     serializedVersion: 2
     m_Bits: 8
+  firstBody: {fileID: 7493271399375598168, guid: 49e744ec136db0c4da4e222fd51c3496, type: 3}
+  secBody: {fileID: 7493271399375598168, guid: a491f4c8a98f32a45b4cb2bbf2e8b110, type: 3}
+  lastBody: {fileID: 7493271399375598168, guid: fed0a98078b6b1349a50ed84503cd6aa, type: 3}
+  blood: {fileID: 7192305438611077969, guid: 5c28ae00e84dac245890bd325989e6b5, type: 3}
   animator: {fileID: 8773800482375529650}
   attackTime: 0
   targetPos: {x: 0, y: 0, z: 0}
