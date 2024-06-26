@@ -7,7 +7,6 @@ public class LeaderboardDisplay : MonoBehaviour
 {
     public Leaderboard leaderboard;
     public Text leaderboardText;
-
     void Start()
     {
         DisplayHighScores();
@@ -19,7 +18,7 @@ public class LeaderboardDisplay : MonoBehaviour
         leaderboardText.text = "";
         for (int i = 0; i < highScores.Count; i++)
         {
-            leaderboardText.text += $"{i + 1}. {highScores[i].name}: {highScores[i].score}\n";
+            leaderboardText.text += $"{highScores[i].name}: {highScores[i].score}\n";
         }
     }
 }
