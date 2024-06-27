@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
+
 public class GameController : MonoBehaviour
 {
     public float score;
@@ -30,8 +33,13 @@ public class GameController : MonoBehaviour
     public bool isSlowTime = false;
     public float slowtimer = 0.0f;
     public float SlowTimerMax = 10;
-    
-    
+
+    private void Start()
+    {
+        Time.timeScale = 0f;
+        menuController.ShowMainMenu();
+    }
+
     //public InputField inputField;
     void Update()
     {
@@ -55,7 +63,7 @@ public class GameController : MonoBehaviour
         }
 
         
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && menuController.mainMenu.activeSelf == false)
         {
 #if UNITY_EDITOR
             //UnityEditor.EditorApplication.isPlaying = false;
@@ -66,7 +74,7 @@ public class GameController : MonoBehaviour
             }
             else
             {
-                Time.timeScale = 1.0f;
+                //Time.timeScale = 1.0f;
                 menuController.HideMenu();
             }
 #else

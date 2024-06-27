@@ -8,6 +8,7 @@ public class MenuController : MonoBehaviour
 {
     public List<GameObject> runtimeUIElements;
     public GameObject menu;
+    public GameObject mainMenu;
     public void ShowMenu()
     {
         foreach(GameObject element in runtimeUIElements)
@@ -16,13 +17,32 @@ public class MenuController : MonoBehaviour
         }
         menu.SetActive(true);
     }
+
+    public void ShowMainMenu()
+    {
+        foreach(GameObject element in runtimeUIElements)
+        {
+            element.SetActive(false);
+        }
+        mainMenu.SetActive(true);
+    }
     public void HideMenu()
     {
+        Time.timeScale = 1.0f;
         foreach (GameObject element in runtimeUIElements)
         {
             element.SetActive(true);
         }
         menu.SetActive(false);
+    }
+    public void HideMainMenu()
+    {
+        Time.timeScale = 1.0f;
+        foreach (GameObject element in runtimeUIElements)
+        {
+            element.SetActive(true);
+        }
+        mainMenu.SetActive(false);
     }
     public void QuitGame()
     {
@@ -37,4 +57,5 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene(0);
         Time.timeScale = 1f;
     }
+
 }
